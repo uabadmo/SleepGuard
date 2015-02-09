@@ -53,7 +53,9 @@ public class MainActivity extends ActionBarActivity {
         System.exit(0);
     }
 
-    ImageButton runCommand;
+    ImageButton runCommand;//FAB button
+
+
 
 }
 
