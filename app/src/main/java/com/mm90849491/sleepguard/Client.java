@@ -2,7 +2,7 @@ package com.mm90849491.sleepguard;
 
 /** Client class, subclass of Person.
  *    Used for password protection.
- *  @version 1.0.0
+ *  @version 1.0.2
  *  @author M.Meng
  *  @see com.mm90849491.sleepguard.Person
  */
@@ -23,7 +23,7 @@ final public class Client extends Person {
     /* ------------- end of instance variables ------------- */
 
     /* -------------- begin of getter methods -------------- */
-    /** Getter of _anonymous.
+    /** Get _anonymous.
      *     Must be checked before retrieve password,
      *        since password may point to NULL.
      *  @return :boolean true if has a password,
@@ -33,7 +33,7 @@ final public class Client extends Person {
         return this._anonymous;
     }
 
-    /** Getter of _password.
+    /** Get _password.
      *     This method should only be used for authentication.
      *  @return :String _password
      */
@@ -43,7 +43,7 @@ final public class Client extends Person {
     /* --------------- end of getter methods --------------- */
 
     /* -------------- begin of setter methods -------------- */
-    /** Setter of _anonymous.
+    /** Set _anonymous.
      *    This method should only be used in _password setter method
      *        to ensure the consistency of these two instance variables.
      *  @param _anonymous :boolean must be Client.HAS_PASSWORD or
@@ -53,7 +53,7 @@ final public class Client extends Person {
         this._anonymous = _anonymous;
     }
 
-    /** Setter of _password.
+    /** Set _password.
      *    This method will call anonymous(bool) to set the value of _anonymous.
      *    Empty string string is allowed,
      *    null pointer should not be passed, but it can be handled.
@@ -68,7 +68,7 @@ final public class Client extends Person {
             this.anonymous(HAS_PASSWORD);
         }
     }
-    /* --------------- end of getter methods --------------- */
+    /* --------------- end of setter methods --------------- */
 
     /* --------------- begin of constructors --------------- */
     /** Default constructor of Client.
@@ -82,7 +82,7 @@ final public class Client extends Person {
 
     /* ------------- begin of protected methods ------------ */
     /**
-     *  Verifying given password.
+     *  Verify given password.
      *  @param _password String leading and trailing space will be cutoff.
      *                      Case-sensitive
      *  @return boolean true if given string matches password or password is not set.
