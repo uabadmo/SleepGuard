@@ -17,7 +17,7 @@ public class Record {
     private char _bitRate = 32;
     /* Default(device recording setting) 32000 44100 48000 */
     private byte _frequencyLevel = 0;
-    private Result _recordResult;
+    private Result _result;
 
     public Record(File DIRECTORY, String NAME) {
         this.targetDirectory(DIRECTORY);
@@ -80,8 +80,5 @@ public class Record {
         return Record.frequencyAvailable[this.frequencyLevel()];
     }
 
-    private void generateResult() {
-        _recordResult.run();
-    }
 
 }
