@@ -1,6 +1,7 @@
 package com.mm90849491.sleepguard;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
+    ImageButton runCommand;//FAB button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,8 @@ public class MainActivity extends ActionBarActivity {
         runCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Selected Button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "New Profile", Toast.LENGTH_SHORT).show();
+                startActivity( new Intent(getApplicationContext(), EditProfile.class ));
             }
         });
     }
@@ -54,9 +57,6 @@ public class MainActivity extends ActionBarActivity {
         finish();
         System.exit(0);
     }
-
-    ImageButton runCommand;//FAB button
-
 
 
 }

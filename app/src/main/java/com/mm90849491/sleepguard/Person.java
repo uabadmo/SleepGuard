@@ -1,12 +1,15 @@
 package com.mm90849491.sleepguard;
 
+
+import java.io.Serializable;
+
 /** Person class, abstract.
  *    Used for storing some essential contact information of a human being mainly in the 21st.
  *    Contains NumberFormatException, error message needs to be prompted by UI.
  *  @version 0.8.0 methods related to phone number need to do integration testing with UI
  *  @author M.Meng
  */
-public abstract class Person {
+public abstract class Person implements Serializable {
 
     /* ------------ begin of constant variables ------------ */
     static private String DEF_FIRST_NAME = "John";
@@ -202,6 +205,18 @@ public abstract class Person {
     /* ---------------- end of constructors ---------------- */
 
     /* ------------- begin of protected methods ------------ */
+
+    @Override
+    public String toString() {
+        return new StringBuffer("mm").append( this.firstName() )
+                .append(":").append( this.lastName())
+                .append(":").append( this.middleName() )
+                .append(":").append( this.prefix() )
+                .append(":").append( this.phoneNumber() )
+                .append(":").append( this.phoneExtension() )
+                .append(":").append( this.emailAddress() )
+                .toString();
+    }
     /* -------------- end of protected methods ------------- */
 
 

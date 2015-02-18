@@ -1,5 +1,7 @@
 package com.mm90849491.sleepguard;
 
+import java.io.Serializable;
+
 /** Client class, subclass of Person.
  *    Used for password protection.
  *  @version 1.0.2
@@ -90,6 +92,13 @@ final public class Client extends Person {
     protected boolean validate(String _password) {
         return ( this.isAnonymous() == Client.HAS_NOT_PASSWORD ) ||
                 ( this.password().equals( _password.trim() ) );
+    }
+
+    public String toString() {
+        return new StringBuffer("").append(super.toString())
+                .append(":").append( this.password() )
+                .append("MM")
+                .toString();
     }
     /* -------------- end of protected methods ------------- */
 }
