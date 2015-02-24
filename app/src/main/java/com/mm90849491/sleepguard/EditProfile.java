@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class EditProfile extends ActionBarActivity {
     private Profile newProfile;
+    private boolean changed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class EditProfile extends ActionBarActivity {
         setContentView(R.layout.activity_edit_profile);
         this.newProfile = new Profile();
         this.newProfile.user = new Client();
+
 
         final EditText etxtFirstName = (EditText)findViewById(R.id.etxtFirstName);
         etxtFirstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -76,29 +78,46 @@ public class EditProfile extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void etxtLeave(View v) {
-        try {
-            switch (v.getId()) {
-                case R.id.etxtFirstName :
-                    if( ! this.newProfile.user.firstName().equals( ((EditText) v).getText().toString().trim() ) )
-                        this.newProfile.user.firstName( ((EditText) v).getText().toString() );
-                    break;
-                case R.id.etxtLastName :
-                    if( ! this.newProfile.user.lastName().equals( ((EditText) v).getText().toString().trim() ) )
-                        this.newProfile.user.lastName( ((EditText) v).getText().toString() );
-                    break;
-                case R.id.etxtEmail :
-                    if( ! this.newProfile.user.emailAddress().equals( ((EditText) v).getText().toString().trim() ) )
-                        this.newProfile.user.emailAddress( ((EditText) v).getText().toString() );
-                    break;
+    public void onClickSave(View v) {
+        if(this.changed) {
+            try {
+                this.newProfile.save(getApplicationContext());
+                Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
+                this.changed = false;
 
+            } catch (IOException e) {
+                //ignore
+                Toast.makeText(EditProfile.this, "Failed to save this profile", Toast.LENGTH_SHORT).show();
             }
-            this.newProfile.save(getApplicationContext());
-            Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            //ignore
-            Toast.makeText(EditProfile.this, "Failed to save this profile", Toast.LENGTH_SHORT).show();
         }
+    }
 
+    public void onClickCancel(View v) {
+        this.changed = false;
+        super.onBackPressed();
+    }
+
+    public void etxtLeave(View v) {
+        switch (v.getId()) {
+            case R.id.etxtFirstName:
+                if (!this.newProfile.user.firstName().equals(((EditText) v).getText().toString().trim())) {
+                    this.newProfile.user.firstName(((EditText) v).getText().toString());
+                    this.changed = true;
+                }
+                break;
+            case R.id.etxtLastName:
+                if (!this.newProfile.user.lastName().equals(((EditText) v).getText().toString().trim())) {
+                    this.newProfile.user.lastName(((EditText) v).getText().toString());
+                    this.changed = true;
+                }
+                break;
+            case R.id.etxtEmail:
+                if (!this.newProfile.user.emailAddress().equals(((EditText) v).getText().toString().trim())) {
+                    this.newProfile.user.emailAddress(((EditText) v).getText().toString());
+                    this.changed = true;
+                }
+                break;
+
+        }
     }
 }

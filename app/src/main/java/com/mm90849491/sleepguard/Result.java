@@ -1,5 +1,7 @@
 package com.mm90849491.sleepguard;
 
+import java.io.File;
+
 /**
  */
 public class Result {
@@ -9,7 +11,9 @@ public class Result {
     private byte hazardLevel = 0;
     private int[][] pauseList;
 
-    protected void run() {
+    protected void analyse (String filename) {
+        File file = new File(filename);
+
 
     }
 
