@@ -26,8 +26,8 @@ public class Record {
         int bufferSize = AudioRecord.getMinBufferSize(frequencyAvailable[2], AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, frequencyAvailable[2], AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
         recorder.startRecording();
-        // wait duration
-        // analyze -> return result
+        // read loop for analysis
+            // analyze -> return result
         recorder.stop();
         recorder.release();
 
