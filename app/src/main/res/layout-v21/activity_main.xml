@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/fragmentContainer">
 
     <ImageButton
         android:id="@+id/runCommand"
@@ -18,5 +19,8 @@
         android:elevation="@dimen/elevation_low"
         android:stateListAnimator="@anim/button_elevation"
         tools:ignore="RtlCompat" />
+
+
+
 
 </FrameLayout>
