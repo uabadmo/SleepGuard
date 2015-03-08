@@ -1,6 +1,9 @@
 package com.mm90849491.sleepguard;
 
 import java.io.File;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+import android.media.AudioFormat;
 
 /**
  * store the information about the recorded file
@@ -19,9 +22,22 @@ public class Record {
     private byte _frequencyLevel = 0;
     private Result _result;
 
+    private void recordNew() {
+        int bufferSize = AudioRecord.getMinBufferSize(frequencyAvailable[2], AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, frequencyAvailable[2], AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
+        recorder.startRecording();
+        // wait duration
+        // analyze -> return result
+        recorder.stop();
+        recorder.release();
+
+        // exception handling to be written
+    }
+
     public Record(File DIRECTORY, String NAME) {
         this.targetDirectory(DIRECTORY);
         this.targetName(NAME);
+        this.recordNew();
     }
 
     /**
@@ -59,7 +75,6 @@ public class Record {
     public char bitRate() {
         return _bitRate;
     }
-
     public void bitRate(char _bitRate) {
         this._bitRate = _bitRate;
     }
@@ -67,7 +82,6 @@ public class Record {
     public byte frequencyLevel() {
         return _frequencyLevel;
     }
-
     public void frequencyLevel(byte _frequencyLevel) {
         this._frequencyLevel = _frequencyLevel;
     }
@@ -79,7 +93,4 @@ public class Record {
     public int frequency() {
         return Record.frequencyAvailable[this.frequencyLevel()];
     }
-
-
-
 }

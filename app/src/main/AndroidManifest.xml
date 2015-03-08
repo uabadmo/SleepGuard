@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mm90849491.sleepguard" >
 
+    <uses-permission android:name="com.android.alarm.permission.RECORD_AUDIO"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
