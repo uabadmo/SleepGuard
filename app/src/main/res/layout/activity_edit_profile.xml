@@ -70,7 +70,7 @@
                 android:ems="10"
                 android:id="@+id/etxtLastName"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/etxtFirstName"
+                android:layout_below="@+id/etxtMiddleName"
                 android:layout_alignParentLeft="true"
                 android:phoneNumber="false" />
 
@@ -81,10 +81,51 @@
                 android:ems="10"
                 android:id="@+id/etxtEmail"
                 android:text="@string/text_e_mail"
+                android:layout_below="@+id/etxtPrefix"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/etxtMiddleName"
+                android:text="@string/text_middle_name"
+                android:layout_below="@+id/etxtFirstName"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/etxtPhoneNumber"
+                android:text="@string/text_phone_number"
+                android:layout_below="@+id/etxtEmail"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/etxtPhoneExtension"
+                android:text="@string/text_phone_extension"
+                android:layout_below="@+id/etxtPhoneNumber"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/etxtPrefix"
+                android:text="@string/text_prefix"
                 android:layout_below="@+id/etxtLastName"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
         </RelativeLayout>
+
     </ScrollView>
 
 </RelativeLayout>

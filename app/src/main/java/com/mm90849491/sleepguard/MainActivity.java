@@ -72,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    public static class SimpleListFragment extends ListFragment
+   public static class SimpleListFragment extends ListFragment
     {
 
         String[] names = new String[] { "Meng", "Matt", "Alex" };
