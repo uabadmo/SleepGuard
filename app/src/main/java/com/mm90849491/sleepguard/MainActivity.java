@@ -1,8 +1,7 @@
 package com.mm90849491.sleepguard;
 
 
-import android.app.FragmentManager;
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -31,12 +31,10 @@ public class MainActivity extends ActionBarActivity {
                 startActivity( new Intent(getApplicationContext(), EditProfile.class ));
             }
         });
-
-        FragmentManager fm = getFragmentManager();
-
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            SimpleListFragment list = new SimpleListFragment();
-            fm.beginTransaction().add(android.R.id.content, list).commit();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
         }
 
     }
@@ -72,22 +70,29 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-   public static class SimpleListFragment extends ListFragment
-    {
+    public static class PlaceholderFragment extends Fragment {
 
-        String[] names = new String[] { "Meng", "Matt", "Alex" };
+        private ListView myListView;
+        private String[] strListView;
+
+        public PlaceholderFragment() {
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    inflater.getContext(), android.R.layout.simple_list_item_1,
-                    names);
-            setListAdapter(adapter);
-            return super.onCreateView(inflater, container, savedInstanceState);
+            View rootView = inflater.inflate(R.layout.activity_main, container, false);
+
+            myListView = (ListView) rootView.findViewById(R.id.myListView);
+
+            strListView = getResources().getStringArray(R.array.my_data_list);
+
+            ArrayAdapter<String> objAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, strListView);
+            myListView.setAdapter(objAdapter);
+
+            return rootView;
         }
     }
-
 
 }
 

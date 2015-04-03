@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragmentContainer">
+    android:id="@+id/container">
 
     <ImageButton
         android:id="@+id/runCommand"
@@ -20,7 +20,12 @@
         android:stateListAnimator="@anim/button_elevation"
         tools:ignore="RtlCompat" />
 
-
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:name="android.app.ListFragment"
+        android:id="@+id/myListView"
+        android:layout_gravity="center" />
 
 
 </FrameLayout>
