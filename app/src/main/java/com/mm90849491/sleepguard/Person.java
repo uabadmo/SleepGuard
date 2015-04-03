@@ -6,10 +6,11 @@ import java.io.Serializable;
 /** Person class, abstract.
  *    Used for storing some essential contact information of a human being mainly in the 21st.
  *    Contains NumberFormatException, error message needs to be prompted by UI.
- *  @version 0.8.0 methods related to phone number need to do integration testing with UI
+ *  @version 0.9.0 methods related to phone number need to do integration testing with UI
  *  @author M.Meng
  */
 public abstract class Person implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /* ------------ begin of constant variables ------------ */
     static private String DEF_FIRST_NAME = "John";
@@ -23,7 +24,7 @@ public abstract class Person implements Serializable {
     private String _middleName;
     private String _prefix;
     private byte[] _phoneNumber;
-    private int _phoneExtension;
+    private byte[] _phoneExtension;
     private String _emailAddress;
     /* ------------- end of instance variables ------------- */
 
@@ -57,9 +58,11 @@ public abstract class Person implements Serializable {
      * @return String
      */
     protected String phoneNumber() {
-        String buffer = "";
-        for(byte digit : this._phoneNumber ) {
-            buffer = buffer.concat(String.valueOf( digit ));
+        String buffer = null;
+        if(this._phoneNumber != null) {
+            for(byte digit : this._phoneNumber ) {
+                buffer = buffer.concat(String.valueOf( digit ));
+            }
         }
         return buffer;
     }
@@ -69,7 +72,13 @@ public abstract class Person implements Serializable {
      * @return String
      */
     protected String phoneExtension() {
-        return String.valueOf( this._phoneExtension );
+        String buffer = null;
+        if(this._phoneExtension != null) {
+            for(byte digit : this._phoneExtension ) {
+                buffer = buffer.concat(String.valueOf( digit ));
+            }
+        }
+        return buffer;
     }
 
     /** Get _prefix.
@@ -148,12 +157,17 @@ public abstract class Person implements Serializable {
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
     protected void phoneExtension(String phoneExtension) throws NumberFormatException {
-        try {
-            this._phoneExtension = Integer.parseInt( phoneExtension );
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException(
-                    "Phone extension cannot contain non-digit character."
-            );
+        int temp;
+        int length = phoneExtension.length();
+        this._phoneExtension = new byte[length];
+        while(length > 0) {
+            temp = phoneExtension.charAt(length - 1) - '0' ;
+            if(temp > 9 || temp < 0) {
+                throw new NumberFormatException(
+                        "Phone extension cannot contain non-digit character."
+                );
+            }
+            this._phoneExtension[length - 1] = (byte)temp;
         }
     }
 
@@ -163,14 +177,16 @@ public abstract class Person implements Serializable {
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
     protected void emailAddress(String emailAddress) throws NumberFormatException {
-        if(! emailAddress.contains("@")) {
-            throw new NumberFormatException(
-                    "e-mail address must contains an @."
-            );
+        if(emailAddress != null) {
+            if (!emailAddress.contains("@")) {
+                throw new NumberFormatException(
+                        "e-mail address must contains an @."
+                );
+            }
+            this._emailAddress = emailAddress;
         }
-        this._emailAddress = emailAddress;
     }
-    /* --------------- end of getter methods --------------- */
+    /* --------------- end of setter methods --------------- */
 
     /* --------------- begin of constructors --------------- */
     /** Default constructor of Client.

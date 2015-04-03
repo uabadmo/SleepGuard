@@ -19,7 +19,7 @@ public class EditProfile extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        this.newProfile = new Profile();
+        this.newProfile = new Profile(this.getApplicationContext());
         this.newProfile.user = new Client();
 
 
@@ -81,7 +81,7 @@ public class EditProfile extends ActionBarActivity {
     public void onClickSave(View v) {
         if(this.changed) {
             try {
-                this.newProfile.save(getApplicationContext());
+                this.newProfile.save();
                 Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
                 this.changed = false;
 

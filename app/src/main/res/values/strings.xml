@@ -16,11 +16,5 @@
     <string name="text_prefix">Prefix</string>
     <string name="text_phone_number">Phone Number</string>
     <string name="text_phone_extension">Phone Extension</string>
-    
-    <string-array name="names">
-        <item>"Meng"</item>
-        <item>"Matt"</item>
-        <item>"Alex"</item>
-    </string-array>
 
 </resources>

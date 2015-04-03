@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 /** Client class, subclass of Person.
  *    Used for password protection.
- *  @version 1.0.2
+ *  @version 1.1.0
  *  @author M.Meng
  *  @see com.mm90849491.sleepguard.Person
  */
-final public class Client extends Person {
+final public class Client extends Person implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /* ------------ begin of constant variables ------------ */
     static private boolean DEF_ANONYMOUS = true;
@@ -94,6 +95,7 @@ final public class Client extends Person {
                 ( this.password().equals( _password.trim() ) );
     }
 
+    @Override
     public String toString() {
         return new StringBuffer("").append(super.toString())
                 .append(":").append( this.password() )

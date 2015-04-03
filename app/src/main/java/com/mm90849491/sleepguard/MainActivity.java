@@ -2,6 +2,7 @@ package com.mm90849491.sleepguard;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,9 +16,103 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+
 
 public class MainActivity extends ActionBarActivity {
-    ImageButton runCommand;//FAB button
+    private ArrayList<Profile> profiles = new ArrayList<Profile>();
+    private PlaceholderFragment pFragment = new PlaceholderFragment();
+    public ImageButton runCommand;//FAB button
+
+    private void init() {
+        Context ctx = this.getApplicationContext();
+
+        /* clean */
+        if(true) {
+            File[] trash = (ctx.getFilesDir()).listFiles(new FilenameFilter() {
+
+                public boolean accept(File dir, String name) {
+                    return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
+                }
+            });
+            for (File x : trash) {
+                x.delete();
+            }
+        }
+
+        /* test */
+        Profile a = new Profile(ctx);
+        Profile b = new Profile(ctx);
+        Profile c = new Profile(ctx);
+        Profile aa = new Profile(ctx);
+
+        try {
+            c.user.lastName("cccccccc");
+            c.save();
+            a.save();
+            a.user.firstName("Meng");
+            b.user.firstName("Matt");
+            c.user.firstName("Alex");
+            c.save();
+            a.save();
+            b.save();
+            aa.save();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        /* normal init sequence */
+        File[] files = (ctx.getFilesDir()).listFiles(new FilenameFilter() {
+
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
+            }
+        });
+        sort(files);
+
+        int i = 0;
+        for(File x : files) {
+            try{
+                File temp = x;
+                if(Profile.readSN(x.getName()) != i) {
+                    System.out.println("Reindex");
+                    temp = new File(Profile.saveName(i));
+                    x.renameTo(temp);
+                }
+                this.profiles.add(new Profile(ctx, temp));
+                i++;
+                System.out.println(temp.getName());
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        /* exam output */
+        System.out.println(">>>IMPORTING<<<");
+        for(Profile x : this.profiles) {
+            System.out.println(x.serialNumber());
+            System.out.println(x.user.toString());
+        }
+        Profile d = new Profile(ctx);
+        try {
+            d.save();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if(d.delete()){
+            System.out.println("D Deleted.");
+        } else {
+            System.out.println("Failed.");
+        }
+        System.out.println("Done.");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +126,13 @@ public class MainActivity extends ActionBarActivity {
                 startActivity( new Intent(getApplicationContext(), EditProfile.class ));
             }
         });
+        this.init();
+
+        /* construct list view */
         if (savedInstanceState == null) {
+            this.pFragment.setProfiles(this.profiles);
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, this.pFragment)
                     .commit();
         }
 
@@ -69,29 +168,19 @@ public class MainActivity extends ActionBarActivity {
         System.exit(0);
     }
 
+    static public void sort(File[] trash) {
+        Arrays.sort(trash, new Comparator<File>() {
+            @Override
+            public int compare(File trash1, File trash2) {
+                int n1 = extractNumber(trash1.getName());
+                int n2 = extractNumber(trash2.getName());
+                return n1 - n2;
+            }
 
-    public static class PlaceholderFragment extends Fragment {
-
-        private ListView myListView;
-        private String[] strListView;
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_main, container, false);
-
-            myListView = (ListView) rootView.findViewById(R.id.myListView);
-
-            strListView = getResources().getStringArray(R.array.my_data_list);
-
-            ArrayAdapter<String> objAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, strListView);
-            myListView.setAdapter(objAdapter);
-
-            return rootView;
-        }
+            private int extractNumber(String that) {
+                return Profile.readSN(that);
+            }
+        });
     }
 
 }
