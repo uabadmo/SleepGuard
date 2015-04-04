@@ -2,6 +2,7 @@ package com.mm90849491.sleepguard;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,7 +82,7 @@ public class EditProfile extends Activity {
     }
 
     public void onClickSave(View v) {
-        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primaryLight ));
+        v.setBackgroundResource(R.color.primaryLight);
         if(this.changed) {
             try {
                 this.newProfile.save();
@@ -91,17 +92,17 @@ public class EditProfile extends Activity {
             } catch (IOException e) {
                 //ignore
                 Toast.makeText(EditProfile.this, "Failed to save this profile", Toast.LENGTH_SHORT).show();
-                ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primary ));
             }
         }
-        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primary ));
+        (new Handler()).postDelayed(new ClickEffect(v, R.color.primary), 100);
+
     }
 
     public void onClickCancel(View v) {
-        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primaryLight ));
+        v.setBackgroundColor(getResources().getColor(R.color.primaryLight));
         this.changed = false;
+        (new Handler()).postDelayed(new ClickEffect(v, R.color.primary), 100);
         super.onBackPressed();
-        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primary ));
     }
 
     public void etxtLeave(View v) {
