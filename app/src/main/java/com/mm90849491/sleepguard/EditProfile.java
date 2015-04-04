@@ -1,17 +1,19 @@
 package com.mm90849491.sleepguard;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
 
-public class EditProfile extends ActionBarActivity {
+public class EditProfile extends Activity {
     private Profile newProfile;
     private boolean changed = false;
 
@@ -79,6 +81,7 @@ public class EditProfile extends ActionBarActivity {
     }
 
     public void onClickSave(View v) {
+        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primaryLight ));
         if(this.changed) {
             try {
                 this.newProfile.save();
@@ -88,13 +91,17 @@ public class EditProfile extends ActionBarActivity {
             } catch (IOException e) {
                 //ignore
                 Toast.makeText(EditProfile.this, "Failed to save this profile", Toast.LENGTH_SHORT).show();
+                ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primary ));
             }
         }
+        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primary ));
     }
 
     public void onClickCancel(View v) {
+        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primaryLight ));
         this.changed = false;
         super.onBackPressed();
+        ((TextView) v).setBackgroundColor(getResources().getColor( R.color.primary ));
     }
 
     public void etxtLeave(View v) {
