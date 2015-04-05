@@ -39,12 +39,11 @@ public class PlaceholderFragment extends Fragment {
             for (int i = strListView.length - 1; i >= 0; i--) {
                 strListView[i] = this.profiles.get(i).user.firstName() + " " + this.profiles.get(i).user.lastName();
             }
+            ArrayAdapter<String> objAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, strListView);
+            myListView.setAdapter(objAdapter);
         } else {
-            strListView = getResources().getStringArray(R.array.my_data_list);
+            //strListView = getResources().getStringArray(R.array.my_data_list);
         }
-
-        ArrayAdapter<String> objAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, strListView);
-        myListView.setAdapter(objAdapter);
 
         return rootView;
     }

@@ -28,14 +28,13 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
     private PlaceholderFragment pFragment = new PlaceholderFragment();
     public ImageButton runCommand;//FAB button
-    private Record recorder = null;
-    private boolean isRecording;
 
     private void init() {
         Context ctx = this.getApplicationContext();
+        boolean debugmode = false;
 
         /* clean */
-        if(true) {
+        if(debugmode) {
             File[] trash = (ctx.getFilesDir()).listFiles(new FilenameFilter() {
 
                 public boolean accept(File dir, String name) {
@@ -48,27 +47,27 @@ public class MainActivity extends ActionBarActivity {
         }
 
         /* test */
-        Profile a = new Profile(ctx);
-        Profile b = new Profile(ctx);
-        Profile c = new Profile(ctx);
-        Profile aa = new Profile(ctx);
+        if(debugmode) {
+            Profile a = new Profile(ctx);
+            Profile b = new Profile(ctx);
+            Profile c = new Profile(ctx);
+            Profile aa = new Profile(ctx);
 
-        try {
-            c.user.lastName("cccccccc");
-            c.save();
-            a.save();
-            a.user.firstName("Meng");
-            b.user.firstName("Matt");
-            c.user.firstName("Alex");
-            c.save();
-            a.save();
-            b.save();
-            aa.save();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            try {
+                c.user.lastName("cccccccc");
+                c.save();
+                a.save();
+                a.user.firstName("Meng");
+                b.user.firstName("Matt");
+                c.user.firstName("Alex");
+                c.save();
+                a.save();
+                b.save();
+                aa.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
 
         /* normal init sequence */
         File[] files = (ctx.getFilesDir()).listFiles(new FilenameFilter() {
@@ -84,45 +83,60 @@ public class MainActivity extends ActionBarActivity {
             try{
                 File temp = x;
                 if(Profile.readSN(x.getName()) != i) {
-                    System.out.println("Reindex");
+                    if(debugmode) {
+                        System.out.println("Reindex");
+                    }
                     temp = new File(Profile.saveName(i));
                     x.renameTo(temp);
                 }
                 this.profiles.add(new Profile(ctx, temp));
                 i++;
-                System.out.println(temp.getName());
+                if(debugmode) {
+                    System.out.println(temp.getName());
+                }
             } catch (NumberFormatException e) {
             }
         }
 
         /* exam output */
-        System.out.println(">>>IMPORTING<<<");
-        for(Profile x : this.profiles) {
-            System.out.println(x.serialNumber());
-            System.out.println(x.user.toString());
+        if(debugmode) {
+            System.out.println(">>>IMPORTING<<<");
+            for (Profile x : this.profiles) {
+                System.out.println(x.serialNumber());
+                System.out.println(x.user.toString());
+            }
+            Profile d = new Profile(ctx);
+            try {
+                d.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (d.delete()) {
+                System.out.println("D Deleted.");
+            } else {
+                System.out.println("Failed.");
+            }
+            System.out.println("Done.");
         }
-        Profile d = new Profile(ctx);
-        try {
-            d.save();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        if(d.delete()){
-            System.out.println("D Deleted.");
-        } else {
-            System.out.println("Failed.");
-        }
-        System.out.println("Done.");
-
-        /* For the record class */
-        isRecording = false; // maybe this should go somewhere else - it needs to go wherever the program is first opened; not whenever the window is opened
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.init();
+        if(this.profiles != null) {
+            /* construct list view */
+            this.pFragment.setProfiles(this.profiles);
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, this.pFragment)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         runCommand = (ImageButton)findViewById(R.id.runCommand);
         runCommand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,17 +145,13 @@ public class MainActivity extends ActionBarActivity {
                 startActivity( new Intent(getApplicationContext(), EditProfile.class ));
             }
         });
-        this.init();
 
-        /* construct list view */
-        if (savedInstanceState == null) {
-            this.pFragment.setProfiles(this.profiles);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, this.pFragment)
-                    .commit();
-        }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
