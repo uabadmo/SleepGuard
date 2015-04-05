@@ -137,17 +137,22 @@ public abstract class Person implements Serializable {
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
     protected void phoneNumber(String phoneNumber) throws NumberFormatException {
-        int temp;
-        int length = phoneNumber.length();
-        this._phoneNumber = new byte[length];
-        while(length > 0) {
-            temp = phoneNumber.charAt(length - 1) - '0' ;
-            if(temp > 9 || temp < 0) {
-                throw new NumberFormatException(
-                        "Phone number cannot contain non-digit character."
-                );
+        this._phoneNumber = null;
+        if(_phoneNumber != null) {
+            int temp;
+            int length = phoneNumber.length();
+            if(length > 0) {
+                this._phoneNumber = new byte[length];
+                while (length > 0) {
+                    temp = phoneNumber.charAt(length - 1) - '0';
+                    if (temp > 9 || temp < 0) {
+                        throw new NumberFormatException(
+                                "Phone number cannot contain non-digit character."
+                        );
+                    }
+                    this._phoneNumber[length - 1] = (byte) temp;
+                }
             }
-            this._phoneNumber[length - 1] = (byte)temp;
         }
     }
 
@@ -157,17 +162,22 @@ public abstract class Person implements Serializable {
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
     protected void phoneExtension(String phoneExtension) throws NumberFormatException {
-        int temp;
-        int length = phoneExtension.length();
-        this._phoneExtension = new byte[length];
-        while(length > 0) {
-            temp = phoneExtension.charAt(length - 1) - '0' ;
-            if(temp > 9 || temp < 0) {
-                throw new NumberFormatException(
-                        "Phone extension cannot contain non-digit character."
-                );
+        this._phoneExtension = null;
+        if(phoneExtension != null) {
+            int temp;
+            int length = phoneExtension.length();
+            if(length > 0) {
+                this._phoneExtension = new byte[length];
+                while (length > 0) {
+                    temp = phoneExtension.charAt(length - 1) - '0';
+                    if (temp > 9 || temp < 0) {
+                        throw new NumberFormatException(
+                                "Phone extension cannot contain non-digit character."
+                        );
+                    }
+                    this._phoneExtension[length - 1] = (byte) temp;
+                }
             }
-            this._phoneExtension[length - 1] = (byte)temp;
         }
     }
 
@@ -177,13 +187,15 @@ public abstract class Person implements Serializable {
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
     protected void emailAddress(String emailAddress) throws NumberFormatException {
+        this._emailAddress = null;
         if(emailAddress != null) {
             if (!emailAddress.contains("@")) {
                 throw new NumberFormatException(
                         "e-mail address must contains an @."
                 );
+            } else {
+                this._emailAddress = emailAddress;
             }
-            this._emailAddress = emailAddress;
         }
     }
     /* --------------- end of setter methods --------------- */

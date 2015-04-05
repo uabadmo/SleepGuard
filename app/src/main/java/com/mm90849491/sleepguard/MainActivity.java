@@ -142,7 +142,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "New Profile", Toast.LENGTH_SHORT).show();
-                startActivity( new Intent(getApplicationContext(), EditProfile.class ));
+                Intent that = new Intent(getApplicationContext(), EditProfile.class);
+                //that.putExtra( EditProfile.NEW_PROFILE, "");
+                startActivity( that );
             }
         });
 
