@@ -21,19 +21,16 @@ public class Record {
     private Thread thr = null;
     private FileOutputStream out = null;
     private int bufferSize;
+    private String _targetPath;
+    private String _targetFilename;
+    private File _targetFile;
 
-    // added 8000 - in my readings supposedly that's what the computer uses
-    static private int[] frequencyAvailable = {0, 8000, 32000, 44100, 48000};
-    static private int frUsed = frequencyAvailable[2];
-
-    private File _targetDirectory;
-    private String _targetName;
-    private String _targetExtension;
-    /* char == unsigned int */
-    private char _bitRate = 32; // ??
-    /* Default(device recording setting) 32000 44100 48000 */
-    private byte _frequencyLevel = 0;
-    private Result _result;
+    public String targetPath() { return _targetPath; }
+    public void targetPath(String input) { this._targetPath = input; }
+    public String targetFilename() { return _targetFilename; }
+    public void targetFilename(String input) { this._targetFilename = input; }
+    public File targetFile() { return _targetFile; }
+    public void targetFile(File input) { this._targetFile = input; }
 
     public Record(/*File DIRECTORY, String NAME*/) {
         //this.targetDirectory(DIRECTORY);
@@ -87,14 +84,72 @@ public class Record {
     // found at http://stackoverflow.com/questions/8499042/android-audiorecord-example (same as above)
     // changed somewhat
     private void writeAudioDataToFile() {
-        String filepath = Environment.getExternalStorageDirectory().getPath();
-        String filename = "/sleep.pcm"; // I used PCM because it's a pre-stripped Wav file, I could make it a wav file too
+        targetPath(Environment.getExternalStorageDirectory().getPath());
+        targetFilename("/sleep.wav"); // I used PCM because it's a pre-stripped Wav file, I could make it a wav file too
         short sData[] = new short[bufferSize];
 
         try {
-            File file = new File(filepath, filename);
-            out = new FileOutputStream(file);
+            targetFile(new File(targetPath(), targetFilename()));
+            out = new FileOutputStream(targetFile());
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // header
+        try {
+            byte[] header = new byte[44];
+            int byteRate = frUsed * 16 * 1 / 8;
+
+            int duration = 0; // should be calculated from duration of the scheduling
+            int totalAudioLength = frUsed * duration / 1000;
+
+            header[0] = 'R';  // RIFF/WAVE header
+            header[1] = 'I';
+            header[2] = 'F';
+            header[3] = 'F';
+            header[4] = (byte) ((totalAudioLength+36) & 0xff);
+            header[5] = (byte) (((totalAudioLength+36) >> 8) & 0xff);
+            header[6] = (byte) (((totalAudioLength+36) >> 16) & 0xff);
+            header[7] = (byte) (((totalAudioLength+36) >> 24)& 0xff);
+            header[8] = 'W';
+            header[9] = 'A';
+            header[10] = 'V';
+            header[11] = 'E';
+            header[12] = 'f';  // 'fmt ' chunk
+            header[13] = 'm';
+            header[14] = 't';
+            header[15] = ' ';
+            header[16] = 16;  // 4 bytes: size of 'fmt ' chunk
+            header[17] = 0;
+            header[18] = 0;
+            header[19] = 0;
+            header[20] = 1;  // format = 1
+            header[21] = 0;
+            header[22] = (byte) AudioFormat.CHANNEL_IN_MONO;
+            header[23] = 0;
+            header[24] = (byte) (frUsed & 0xff);
+            header[25] = (byte) ((frUsed >> 8) & 0xff);
+            header[26] = (byte) ((frUsed >> 16) & 0xff);
+            header[27] = (byte) ((frUsed >> 24) & 0xff);
+            header[28] = (byte) (byteRate & 0xff);
+            header[29] = (byte) ((byteRate >> 8) & 0xff);
+            header[30] = (byte) ((byteRate >> 16) & 0xff);
+            header[31] = (byte) ((byteRate >> 24) & 0xff);
+            header[32] = (byte) (AudioFormat.CHANNEL_IN_MONO * AudioFormat.ENCODING_PCM_16BIT / 8);  // block align
+            header[33] = 0;
+            header[34] = 2;  // bits per sample (channels * bitspersample / 8)
+            header[35] = 0;
+            header[36] = 'd';
+            header[37] = 'a';
+            header[38] = 't';
+            header[39] = 'a';
+            header[40] = (byte) (totalAudioLength & 0xff);
+            header[41] = (byte) ((totalAudioLength >> 8) & 0xff);
+            header[42] = (byte) ((totalAudioLength >> 16) & 0xff);
+            header[43] = (byte) ((totalAudioLength >> 24) & 0xff);
+
+            out.write(header, 0, 44);
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -118,6 +173,19 @@ public class Record {
             e.printStackTrace();
         }
     }
+
+    // added 8000 - in my readings supposedly that's what the computer uses
+    static private int[] frequencyAvailable = {0, 8000, 32000, 44100, 48000};
+    static private int frUsed = frequencyAvailable[2];
+
+    private File _targetDirectory;
+    private String _targetName;
+    private String _targetExtension;
+    /* char == unsigned int */
+    private char _bitRate = 32; // ??
+    /* Default(device recording setting) 32000 44100 48000 */
+    private byte _frequencyLevel = 0;
+    private Result _result;
 
     /**
      *
