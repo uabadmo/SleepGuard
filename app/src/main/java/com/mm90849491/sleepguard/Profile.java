@@ -58,6 +58,15 @@ public class Profile {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Profile that = (Profile) obj;
+        return (
+                    this.user.toString().equals( that.user.toString() ) &&
+                    this.doctor.toString().equals( that.doctor.toString() )
+                );
+    }
+
     protected void save() throws IOException {
         FileOutputStream fos = new FileOutputStream(
                 new File(this._CTX.getFilesDir() , saveName(this.serialNumber() )));

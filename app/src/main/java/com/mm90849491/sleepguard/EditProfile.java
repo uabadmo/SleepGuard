@@ -97,9 +97,49 @@ public class EditProfile extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickSave(View v) {
+    public void onClickSave(View that) {
         boolean changed = false;
-        v.setBackgroundResource(R.color.primaryLight);
+        EditText v;
+        String dummy;
+        String oldString;
+        String newString;
+        that.setBackgroundResource(R.color.primaryLight);
+
+        v = this.etxtFirstName;
+        dummy = getResources().getString(R.string.text_first_name);
+        oldString = this.newProfile.user.firstName();
+        if(v.getText().toString() == null || v.getText().toString().trim().isEmpty()
+                || v.getText().toString().trim().equals(dummy) ) {
+            if(oldString != null) {
+                changed = true;
+                this.newProfile.user.firstName(null);
+            }
+        } else {
+            newString = v.getText().toString().trim();
+            if(oldString == null || !oldString.equals(newString)) {
+                changed = true;
+                this.newProfile.user.firstName(newString);
+            }
+        }
+
+        v = this.etxtLastName;
+        dummy = getResources().getString(R.string.text_last_name);
+        oldString = this.newProfile.user.lastName();
+        if(v.getText().toString() == null || v.getText().toString().trim().isEmpty()
+                || v.getText().toString().trim().equals(dummy) ) {
+            if(oldString != null) {
+                changed = true;
+                this.newProfile.user.lastName(null);
+            }
+        } else {
+            newString = v.getText().toString().trim();
+            if(oldString == null || !oldString.equals(newString)) {
+                changed = true;
+                this.newProfile.user.lastName(newString);
+            }
+        }
+
+
         if(changed) {
             try {
                 this.newProfile.save();
@@ -110,7 +150,7 @@ public class EditProfile extends Activity {
                 Toast.makeText(EditProfile.this, "Failed to save this profile", Toast.LENGTH_SHORT).show();
             }
         }
-        (new Handler()).postDelayed(new ClickEffect(v, R.color.primary), 100);
+        (new Handler()).postDelayed(new ClickEffect(that, R.color.primary), 100);
 
     }
 
