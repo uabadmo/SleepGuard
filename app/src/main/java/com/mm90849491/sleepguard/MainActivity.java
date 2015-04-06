@@ -28,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
     private PlaceholderFragment pFragment = new PlaceholderFragment();
     public ImageButton runCommand;//FAB button
+    private Record recorder = null;
+    private boolean isRecording;
 
     private void init() {
         Context ctx = this.getApplicationContext();
@@ -132,6 +134,8 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, this.pFragment)
                     .commit();
         }
+        /* For the record class */
+        isRecording = false; // maybe this should go somewhere else - it needs to go wherever the program is first opened; not whenever the window is opened
     }
 
     @Override
