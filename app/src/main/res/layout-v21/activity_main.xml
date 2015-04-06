@@ -8,7 +8,7 @@
     android:id="@+id/container">
 
     <ImageButton
-        android:id="@+id/runCommand"
+        android:id="@+id/btnNewProfile"
         android:layout_width="@dimen/round_button_diameter"
         android:layout_height="@dimen/round_button_diameter"
         android:layout_gravity="end|bottom"
@@ -19,11 +19,12 @@
         android:src="@android:drawable/ic_input_add"
         android:elevation="@dimen/elevation_low"
         android:stateListAnimator="@anim/button_elevation"
-        tools:ignore="RtlCompat" />
+        tools:ignore="RtlCompat"
+        android:contentDescription="@string/title_activity_edit_profile" />
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="390dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:name="android.app.ListFragment"
         android:id="@+id/myListView"
         android:layout_gravity="center" />

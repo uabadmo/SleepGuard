@@ -27,7 +27,6 @@ import java.util.Comparator;
 public class MainActivity extends ActionBarActivity {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
     private PlaceholderFragment pFragment = new PlaceholderFragment();
-    public ImageButton runCommand;//FAB button
     private Record recorder = null;
     private boolean isRecording;
 
@@ -141,8 +140,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onStart() {
         super.onStart();
-        runCommand = (ImageButton)findViewById(R.id.runCommand);
-        runCommand.setOnClickListener(new View.OnClickListener() {
+        ImageButton btnNewProfile = (ImageButton)findViewById(R.id.btnNewProfile);
+        btnNewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "New Profile", Toast.LENGTH_SHORT).show();
@@ -181,11 +180,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void  btnOnClick(View v) {
-        finish();
-        System.exit(0);
     }
 
     static public void sort(File[] trash) {

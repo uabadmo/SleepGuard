@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryDark">#263238</color>
-    <color name="primary">#37474F</color>
-    <color name="primaryLight">#8EB7CC</color>
+    <color name="primaryDark">#FF263238</color>
+    <color name="primary">#FF37474F</color>
+    <color name="primaryLight">#668EB7CC</color>
+    <color name="listBackground">#00FFFFFF</color>
+    <color name="listBackgroundOnclick">#9937474F</color>
 </resources>

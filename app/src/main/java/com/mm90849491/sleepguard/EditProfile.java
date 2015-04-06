@@ -18,9 +18,11 @@ import java.io.IOException;
 
 public class EditProfile extends Activity {
     public final static String NEW_PROFILE = "com.mm90849491.sleepguard.EDIT_PROFILE";
+    private EditText etxtFirstName;
+    private EditText etxtLastName;
+    private EditText etxtEmail;
     private String fileName;
     private Profile newProfile;
-    private boolean changed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,10 @@ public class EditProfile extends Activity {
             this.fileName = (String) savedInstanceState.getSerializable(NEW_PROFILE);
         }
 
+        this.etxtFirstName = (EditText)findViewById(R.id.etxtFirstName);
+        this.etxtLastName = (EditText)findViewById(R.id.etxtLastName);
+        this.etxtEmail = (EditText)findViewById(R.id.etxtEmail);
+
     }
 
     @Override
@@ -51,39 +57,23 @@ public class EditProfile extends Activity {
         } else {
             File temp = new File(ctx.getFilesDir(), this.fileName);
             this.newProfile = new Profile(ctx, temp);
+            if(this.newProfile.user.firstName() != null) {
+                this.etxtFirstName.setText(this.newProfile.user.firstName());
+            }
+
+            if(this.newProfile.user.lastName() != null) {
+                this.etxtLastName.setText( this.newProfile.user.lastName() );
+            }
+            if(this.newProfile.user.emailAddress() != null) {
+                this.etxtEmail.setText(this.newProfile.user.emailAddress());
+            }
         }
-
-        final EditText etxtFirstName = (EditText)findViewById(R.id.etxtFirstName);
-        etxtFirstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    etxtLeave(v);
-                }
-            }
-        });
-
-        final EditText etxtLastName = (EditText)findViewById(R.id.etxtLastName);
-        etxtLastName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    etxtLeave(v);
-                }
-            }
-        });
-
-        final EditText etxtEmail = (EditText)findViewById(R.id.etxtEmail);
-        etxtEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    etxtLeave(v);
-                }
-            }
-        });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,12 +98,12 @@ public class EditProfile extends Activity {
     }
 
     public void onClickSave(View v) {
+        boolean changed = false;
         v.setBackgroundResource(R.color.primaryLight);
-        if(this.changed) {
+        if(changed) {
             try {
                 this.newProfile.save();
                 Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
-                this.changed = false;
 
             } catch (IOException e) {
                 //ignore
@@ -126,55 +116,6 @@ public class EditProfile extends Activity {
 
     public void onClickCancel(View v) {
         v.setBackgroundColor(getResources().getColor(R.color.primaryLight));
-        this.changed = false;
-        (new Handler()).postDelayed(new ClickEffect(v, R.color.primary), 100);
         super.onBackPressed();
-    }
-
-    public void etxtLeave(View v) {
-        switch (v.getId()) {
-            case R.id.etxtFirstName:
-                if ( !((EditText) v).getText().toString().trim().isEmpty()) {
-                    if (!((EditText) v).getText().toString().trim().equals(getString(R.string.text_first_name))) {
-                        if (!this.newProfile.user.firstName().equals(((EditText) v).getText().toString().trim())) {
-                            this.newProfile.user.firstName(((EditText) v).getText().toString());
-                            this.changed = true;
-                        }
-                    }
-                } else if (this.newProfile.user.firstName() != null) {
-                    this.newProfile.user.firstName(null);
-                    this.changed = true;
-                }
-                break;
-            case R.id.etxtLastName:
-                if ( !((EditText) v).getText().toString().trim().isEmpty()) {
-                    if(!((EditText) v).getText().toString().trim().equals(getString(R.string.text_last_name)) ) {
-                        if (!this.newProfile.user.lastName().equals(((EditText) v).getText().toString().trim())) {
-                            this.newProfile.user.lastName(((EditText) v).getText().toString());
-                            this.changed = true;
-                        }
-                    }
-                } else if(this.newProfile.user.lastName() != null) {
-                    this.newProfile.user.lastName(null);
-                    this.changed = true;
-                }
-                break;
-            case R.id.etxtEmail:
-                if ( !((EditText) v).getText().toString().trim().isEmpty()) {
-                    if(!((EditText) v).getText().toString().trim().equals(getString(R.string.text_e_mail)) ) {
-                        if (this.newProfile.user.emailAddress() == null ||
-                                !this.newProfile.user.emailAddress().equals(((EditText) v).getText().toString().trim())) {
-                            this.newProfile.user.emailAddress(((EditText) v).getText().toString());
-                            this.changed = true;
-                        }
-                    }
-                } else if(this.newProfile.user.emailAddress() != null) {
-                    this.newProfile.user.emailAddress(null);
-                    this.changed = true;
-                }
-                break;
-
-
-        }
     }
 }
