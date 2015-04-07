@@ -6,14 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -24,7 +20,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 
-public class MainActivity extends ActionBarActivity implements ProfileList.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
     //private PlaceholderFragment pFragment = new PlaceholderFragment();
     private ProfileList pList;
@@ -189,12 +185,6 @@ public class MainActivity extends ActionBarActivity implements ProfileList.OnFra
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void onFragmentInteraction(String id) {
-
     }
 
     static public void sort(File[] trash) {

@@ -1,9 +1,10 @@
 package com.mm90849491.sleepguard;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
 
 /**
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * with a GridView.
  * <p/>
  */
-public class ProfileList extends Fragment implements ListView.OnItemClickListener {
+public class DiagnosisList extends Fragment implements ListView.OnItemClickListener {
     /**
      * The fragment's ListView/GridView.
      */
@@ -42,7 +44,7 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ProfileList()  {
+    public DiagnosisList() {
         this.profiles = null;
     }
 
@@ -67,7 +69,7 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
         // Set OnItemClickListener so we can be notified on item clicks
         this.mListView.setOnItemClickListener(this);
 
-        if(this.profiles != null) {
+        if (this.profiles != null) {
             this.strListView = new String[this.profiles.size()];
             for (int i = this.strListView.length - 1; i >= 0; i--) {
                 this.strListView[i] = this.profiles.get(i).user.firstName() + " " + this.profiles.get(i).user.lastName();
@@ -78,6 +80,7 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
 
         return view;
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,5 +104,5 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
             ((TextView) emptyView).setText(emptyText);
         }
     }
-
 }
+
