@@ -15,7 +15,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
+/** Empty fragment to hold the listView activity.
+ *
  * @author Alex
  */
 public class PlaceholderFragment extends Fragment {
@@ -53,12 +54,12 @@ public class PlaceholderFragment extends Fragment {
                     (new Handler()).postDelayed(new ClickEffect(view, R.color.listBackground), 100);
                     Toast.makeText(view.getContext(), "Edit Profile", Toast.LENGTH_SHORT).show();
                     Intent that = new Intent(view.getContext(), EditProfile.class);
-                    that.putExtra( EditProfile.NEW_PROFILE, Profile.saveName(position));
-                    startActivity( that );
+                    that.putExtra(EditProfile.NEW_PROFILE, Profile.saveName(position));
+                    startActivity(that);
                 }
             });
         } else {
-            //strListView = getResources().getStringArray(R.array.my_data_list);
+            strListView = getResources().getStringArray(R.array.my_data_list);
         }
 
 
