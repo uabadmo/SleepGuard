@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mm90849491.sleepguard" >
 
-    <uses-permission android:name="com.android.alarm.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="com.android.alarm.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -25,12 +25,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mm90849491.sleepguard.MainActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DiagnosisManager"
+            android:label="@string/title_activity_diagnosis_manager"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mm90849491.sleepguard.MainActivity" />
         </activity>
     </application>
 
