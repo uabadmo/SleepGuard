@@ -26,7 +26,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:name="android.app.ListFragment"
-        android:id="@+id/myListView"
+        android:id="@+id/lstProfile"
         android:layout_gravity="center" />
 
 

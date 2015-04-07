@@ -24,9 +24,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ProfileList.OnFragmentInteractionListener {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
-    private PlaceholderFragment pFragment = new PlaceholderFragment();
+    //private PlaceholderFragment pFragment = new PlaceholderFragment();
+    private ProfileList pList;
     private Record recorder = null;
     private boolean isRecording;
 
@@ -128,10 +129,18 @@ public class MainActivity extends ActionBarActivity {
         this.init();
         if(this.profiles != null) {
             /* construct list view */
+            /*
             this.pFragment.setProfiles(this.profiles);
             getFragmentManager().beginTransaction()
                     .add(R.id.container, this.pFragment)
                     .commit();
+                    */
+            this.pList = new ProfileList();
+            this.pList.setProfiles(this.profiles);
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, this.pList)
+                    .commit();
+
         }
         /* For the record class */
         isRecording = false; // maybe this should go somewhere else - it needs to go wherever the program is first opened; not whenever the window is opened
@@ -180,6 +189,12 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 
     static public void sort(File[] trash) {

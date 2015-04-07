@@ -38,7 +38,7 @@ public class PlaceholderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_main, container, false);
 
-        this.myListView = (ListView) rootView.findViewById(R.id.myListView);
+        this.myListView = (ListView) rootView.findViewById(R.id.lstProfile);
 
         if(this.profiles != null) {
             this.strListView = new String[this.profiles.size()];
