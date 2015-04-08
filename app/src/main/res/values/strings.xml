@@ -4,6 +4,8 @@
     <string name="app_name">Sleep Guard</string>
     <string name="action_settings">Settings</string>
     <string name="action_profile">Profiles</string>
+    <string name="action_clear_setting">Clear Setting</string>
+    <string name="action_clear_profile">Clear Profiles</string>
     <string name="title_activity_edit_profile">New Profile</string>
     <string name="title_activity_diagnosis_manager">Diagnosis Manager</string>
     <string name="title_activity_help_desk">Manual</string>

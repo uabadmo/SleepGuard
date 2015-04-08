@@ -15,7 +15,7 @@ public abstract class Person implements Serializable {
     /* ------------ begin of constant variables ------------ */
     static private String DEF_FIRST_NAME = "John";
     static private String DEF_LAST_NAME = "Smith";
-    static private String DEF_PREFIX = "Mr.";
+    static private String DEF_PREFIX = "";
     /* ------------- end of constant variables ------------- */
 
     /* ------------ begin of instance variables ------------ */
@@ -104,7 +104,11 @@ public abstract class Person implements Serializable {
      * @param firstName String.
      */
     protected void firstName(String firstName) {
-        this._firstName = firstName;
+        if(firstName == null) {
+            this._firstName = Person.DEF_FIRST_NAME;
+        } else {
+            this._firstName = firstName;
+        }
     }
 
     /** Set _lastName.
@@ -112,7 +116,11 @@ public abstract class Person implements Serializable {
      * @param lastName String.
      */
     protected void lastName(String lastName) {
-        this._lastName = lastName;
+        if(lastName == null) {
+            this._lastName = Person.DEF_LAST_NAME;
+        } else {
+            this._lastName = lastName;
+        }
     }
 
     /** Set _middleName.
@@ -128,7 +136,11 @@ public abstract class Person implements Serializable {
      * @param prefix String.
      */
     protected void prefix(String prefix) {
-        this._prefix = prefix;
+        if(prefix == null) {
+            this._prefix = Person.DEF_PREFIX;
+        } else {
+            this._prefix = prefix;
+        }
     }
 
     /** Set _phoneNumber.

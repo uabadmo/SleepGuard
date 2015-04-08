@@ -105,6 +105,7 @@ public class EditProfile extends Activity {
         String newString;
         that.setBackgroundResource(R.color.primaryLight);
 
+        /* null sensitive  */
         v = this.etxtFirstName;
         dummy = getResources().getString(R.string.text_first_name);
         oldString = this.newProfile.user.firstName();
@@ -139,11 +140,29 @@ public class EditProfile extends Activity {
             }
         }
 
+        /* null non-sensitive  */
+        v = this.etxtEmail;
+        dummy = getResources().getString(R.string.text_e_mail);
+        oldString = this.newProfile.user.emailAddress();
+        if(v.getText().toString() == null || v.getText().toString().trim().isEmpty()
+                || v.getText().toString().trim().equals(dummy) ) {
+            if(oldString != null) {
+                changed = true;
+                this.newProfile.user.emailAddress(null);
+            }
+        } else {
+            newString = v.getText().toString().trim();
+            if(oldString == null || !oldString.equals(newString)) {
+                changed = true;
+                this.newProfile.user.emailAddress(newString);
+            }
+        }
 
         if(changed) {
             try {
                 this.newProfile.save();
                 Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
+
 
             } catch (IOException e) {
                 //ignore

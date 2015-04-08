@@ -27,51 +27,72 @@ public class MainActivity extends ActionBarActivity {
     private Setting config;
     private Record recorder = null;
     private boolean isRecording;
+    private Context ctx;
+
+    private void clearProfile() {
+        File[] trash = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
+
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
+            }
+        });
+        for (File x : trash) {
+            x.delete();
+        }
+    }
+
+    private void clearSetting() {
+        if(this.config != null) {
+            this.config.delete();
+        }
+    }
+
+    private void dummyProfile() {
+        Profile a = new Profile(this.ctx);
+        Profile b = new Profile(this.ctx);
+        Profile c = new Profile(this.ctx);
+        Profile aa = new Profile(this.ctx);
+
+        try {
+            c.user.lastName("cccccccc");
+            c.save();
+            a.save();
+            a.user.firstName("Meng");
+            b.user.firstName("Matt");
+            c.user.firstName("Alex");
+            c.save();
+            a.save();
+            b.save();
+            aa.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void init() {
-        Context ctx = this.getApplicationContext();
-        this.config = new Setting(ctx);
+        this.ctx = this.getApplicationContext();
+        clearProfile();
+        this.config = new Setting(this.ctx);
+        if( this.config.load() ) {
+            Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+            Intent that = new Intent(getApplicationContext(), HelpDesk.class );
+            startActivity( that );
+        }
 
         boolean debugmode = false;
 
         /* clean */
         if(debugmode) {
-            File[] trash = (ctx.getFilesDir()).listFiles(new FilenameFilter() {
-
-                public boolean accept(File dir, String name) {
-                    return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
-                }
-            });
-            for (File x : trash) {
-                x.delete();
-            }
+           this.clearProfile();
         }
 
         /* test */
         if(debugmode) {
-            Profile a = new Profile(ctx);
-            Profile b = new Profile(ctx);
-            Profile c = new Profile(ctx);
-            Profile aa = new Profile(ctx);
-
-            try {
-                c.user.lastName("cccccccc");
-                c.save();
-                a.save();
-                a.user.firstName("Meng");
-                b.user.firstName("Matt");
-                c.user.firstName("Alex");
-                c.save();
-                a.save();
-                b.save();
-                aa.save();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.dummyProfile();
         }
 
         /* normal init sequence */
-        File[] files = (ctx.getFilesDir()).listFiles(new FilenameFilter() {
+        File[] files = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
@@ -90,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
                     temp = new File(Profile.saveName(i));
                     x.renameTo(temp);
                 }
-                this.profiles.add(new Profile(ctx, temp));
+                this.profiles.add(new Profile(this.ctx, temp));
                 i++;
                 if(debugmode) {
                     System.out.println(temp.getName());
@@ -106,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
                 System.out.println(x.serialNumber());
                 System.out.println(x.user.toString());
             }
-            Profile d = new Profile(ctx);
+            Profile d = new Profile(this.ctx);
             try {
                 d.save();
             } catch (IOException e) {
@@ -119,6 +140,56 @@ public class MainActivity extends ActionBarActivity {
             }
             System.out.println("Done.");
         }
+
+
+        if(this.profiles != null) {
+            /* construct list view */
+            this.pList = new ProfileList();
+            this.pList.setProfiles(this.profiles);
+            this.getFragmentManager().beginTransaction()
+                    .add(R.id.container, this.pList)
+                    .commit();
+
+        }
+    }
+
+    private void clearFragment() {
+        this.getFragmentManager().beginTransaction()
+                .remove(this.getFragmentManager().findFragmentById(R.id.container))
+                .commit();
+    }
+
+    private void refresh() {
+        File[] files = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
+
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
+            }
+        });
+        sort(files);
+
+        int i = 0;
+        for(File x : files) {
+            try{
+                File temp = x;
+                if(Profile.readSN(x.getName()) != i) {
+                    temp = new File(Profile.saveName(i));
+                    x.renameTo(temp);
+                }
+                this.profiles.add(new Profile(this.ctx, temp));
+                i++;
+            } catch (NumberFormatException e) {}
+        }
+
+        if(this.profiles == null) {
+            this.clearFragment();
+        } else {
+            this.pList = new ProfileList();
+            this.pList.setProfiles(this.profiles);
+            this.getFragmentManager().beginTransaction()
+                    .replace(R.id.container, this.pList)
+                    .commit();
+        }
     }
 
     @Override
@@ -126,21 +197,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.init();
-        if(this.profiles != null) {
-            /* construct list view */
-            /*
-            this.pFragment.setProfiles(this.profiles);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, this.pFragment)
-                    .commit();
-                    */
-            this.pList = new ProfileList();
-            this.pList.setProfiles(this.profiles);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, this.pList)
-                    .commit();
-
-        }
         /* For the record class */
         isRecording = false; // maybe this should go somewhere else - it needs to go wherever the program is first opened; not whenever the window is opened
     }
@@ -173,6 +229,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        this.refresh();
     }
 
     @Override
@@ -184,19 +241,29 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if(id == R.id.action_profile){
-            Toast.makeText(MainActivity.this, "Selected Profiles", Toast.LENGTH_SHORT).show();
-        }
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_profile:
+                this.dummyProfile();
+                this.refresh();
+                return true;
+            case R.id.action_clear_setting:
+                this.clearSetting();
 
-        return super.onOptionsItemSelected(item);
+                Toast.makeText(MainActivity.this, "Setting Cleared", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_clear_profile:
+                this.clearProfile();
+                this.clearFragment();
+                this.profiles = null;
+                Toast.makeText(MainActivity.this, "Profiles Cleared", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     static public void sort(File[] trash) {

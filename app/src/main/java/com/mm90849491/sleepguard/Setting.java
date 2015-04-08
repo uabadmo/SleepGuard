@@ -21,6 +21,8 @@ public class Setting {
     private int primary;
     private boolean lastOpen;
     private boolean lockMode;
+    private boolean showLastName;
+    private boolean showFirstName;
     private boolean changed;
 
     public Setting(Context that) {
@@ -38,6 +40,12 @@ public class Setting {
 
     protected void primary(int that) {
         this.primary = that;
+    }
+
+    protected void delete() {
+        if( this.ini.exists() ) {
+            this.ini.delete();
+        }
     }
 
     protected boolean load() {
