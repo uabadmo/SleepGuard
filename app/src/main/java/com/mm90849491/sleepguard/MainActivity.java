@@ -72,10 +72,15 @@ public class MainActivity extends ActionBarActivity {
         this.ctx = this.getApplicationContext();
         //clearProfile();
         this.config = new Setting(this.ctx);
-        if( this.config.load() ) {
+        if( !this.config.load() ) {
+            try {
+                this.config.save();
+            } catch (IOException e) {
+                Toast.makeText(MainActivity.this, "Failed to initialise this app", Toast.LENGTH_SHORT).show();
+            }
             Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
             Intent that = new Intent(getApplicationContext(), HelpDesk.class );
-            startActivity( that );
+            startActivity(that);
         }
 
         this.pList = new ProfileList();
@@ -118,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
             }
 
             this.pList = new ProfileList();
-            this.pList.setProfiles(this.profiles);
+            this.pList.setProfiles(this.profiles, this.config.showFirstName(), this.config.showLastName() );
             this.getFragmentManager().beginTransaction()
                     .replace(R.id.container, this.pList)
                     .commit();
@@ -179,6 +184,8 @@ public class MainActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Intent that = new Intent(getApplicationContext(), SettingsActivity.class );
+                startActivity(that);
                 return true;
             case R.id.action_profile:
                 this.dummyProfile();

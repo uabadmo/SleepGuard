@@ -21,13 +21,29 @@ public class Setting {
     private int primary;
     private boolean lastOpen;
     private boolean lockMode;
-    private boolean showLastName;
-    private boolean showFirstName;
+    private boolean _showFirstName;
+    private boolean _showLastName;
     private boolean changed;
 
     public Setting(Context that) {
         this.ctx = that;
         this.ini = new File(that.getFilesDir(), SAVEDATA);
+    }
+
+    protected boolean showFirstName() {
+        return  this._showFirstName;
+    }
+
+    protected boolean showLastName() {
+        return this._showLastName;
+    }
+
+    protected void showFirstName(boolean flag) {
+        this._showFirstName = flag;
+    }
+
+    protected void showLastName(boolean flag) {
+        this._showLastName = flag;
     }
 
     protected void lastOpen(boolean flag) {
@@ -54,6 +70,8 @@ public class Setting {
             this.changed = true;
             this.lastOpen = true;
             this.lockMode =false;
+            this.showFirstName(true);
+            this.showLastName(true);
         } else {
             FileInputStream in = null;
             BufferedInputStream buf = null;
@@ -66,6 +84,10 @@ public class Setting {
                 this.lastOpen = ( (mask & temp[0]) == mask);
                 mask = 0b100000;
                 this.lockMode = ( (mask & temp[0]) == mask);
+                mask = 0b10000;
+                this.showFirstName ( (mask & temp[0]) == mask);
+                mask = 0b1000;
+                this.showLastName ( (mask & temp[0]) == mask);
 
                 this.primary = 0;
                 for(int i = 0; i < Integer.SIZE; i++ ) {
@@ -76,6 +98,8 @@ public class Setting {
                 this.changed = true;
                 this.lastOpen = true;
                 this.lockMode =false;
+                this.showFirstName(true);
+                this.showLastName(true);
             } finally {
                 if (buf != null) {
                     try {
@@ -104,6 +128,14 @@ public class Setting {
         }
         mask = 0b100000;
         if(this.lockMode) {
+            flag ^= mask;
+        }
+        mask = 0b10000;
+        if(this.showFirstName()) {
+            flag ^= mask;
+        }
+        mask = 0b1000;
+        if(this.showLastName()) {
             flag ^= mask;
         }
 

@@ -37,6 +37,8 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
     private ListAdapter mAdapter;
     private String[] strListView;
     private ArrayList<Profile> profiles;
+    private boolean showLastName;
+    private boolean showFirstName;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,10 +46,14 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
      */
     public ProfileList()  {
         this.profiles = null;
+        this.showFirstName = true;
+        this.showLastName = true;
     }
 
-    public void setProfiles(ArrayList<Profile> that) {
+    public void setProfiles(ArrayList<Profile> that, boolean showFirstName, boolean showLastName) {
         this.profiles = that;
+        this.showFirstName = showFirstName;
+        this.showLastName = showLastName;
     }
 
     @Override
@@ -70,7 +76,15 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
         if(this.profiles != null) {
             this.strListView = new String[this.profiles.size()];
             for (int i = this.strListView.length - 1; i >= 0; i--) {
-                this.strListView[i] = this.profiles.get(i).user.firstName() + " " + this.profiles.get(i).user.lastName();
+                if(this.showFirstName && this.showLastName) {
+                    this.strListView[i] = this.profiles.get(i).user.firstName() + " " + this.profiles.get(i).user.lastName();
+                } else if(this.showFirstName) {
+                    this.strListView[i] = this.profiles.get(i).user.firstName();
+                } else if(this.showLastName) {
+                    this.strListView[i] = this.profiles.get(i).user.lastName();
+                } else  {
+                    this.strListView[i] = String.format("Profile-%0" + Profile.digits + "d", i);
+                }
             }
             this.mAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, strListView);
             this.mListView.setAdapter(this.mAdapter);
