@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard; // for update
+package com.mm90849491.sleepguard;
 
 import java.io.File;
 import android.media.AudioRecord;

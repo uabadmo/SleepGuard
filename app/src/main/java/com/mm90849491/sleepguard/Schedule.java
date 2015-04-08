@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard; // for update
+package com.mm90849491.sleepguard;
 
 /* To Alex:
  * The schedule class is close, but it's still buggy.
