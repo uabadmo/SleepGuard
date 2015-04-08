@@ -22,12 +22,27 @@
         tools:ignore="RtlCompat"
         android:contentDescription="@string/title_activity_edit_profile" />
 
+    <ImageButton
+        tools:ignore="RtlCompat"
+        android:id="@+id/btnManual"
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:layout_gravity="right|end|top"
+        android:layout_marginEnd="@dimen/add_button_margin"
+        android:tint="@android:color/white"
+        android:background="@drawable/oval_ripple"
+        android:src="@android:drawable/ic_dialog_info"
+        android:elevation="@dimen/elevation_low"
+        android:stateListAnimator="@anim/button_elevation"
+        android:contentDescription="@string/title_activity_help_desk"
+        android:layout_marginTop="@dimen/add_button_margin" />
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:name="android.app.ListFragment"
-        android:id="@+id/myListView"
-        android:layout_gravity="center" />
+        android:id="@+id/lstProfile"
+        android:layout_gravity="right|bottom" />
 
 
 </FrameLayout>

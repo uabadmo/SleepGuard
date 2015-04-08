@@ -31,7 +31,7 @@ public class EditProfile extends Activity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                this.fileName = null;
+                this.fileName = Profile.saveName(99);
             } else {
                 this.fileName = extras.getString(NEW_PROFILE);
             }
@@ -49,25 +49,23 @@ public class EditProfile extends Activity {
     protected void  onStart() {
         super.onStart();
         Context ctx = this.getApplicationContext();
-        if(this.fileName == null) {
-            this.newProfile = new Profile(ctx);
-            this.newProfile.user = new Client();
-            this.newProfile.doctor = new Clinician("");
-
-        } else {
-            File temp = new File(ctx.getFilesDir(), this.fileName);
+        File temp = new File(ctx.getFilesDir(), this.fileName);
+        if(temp.exists()) {
             this.newProfile = new Profile(ctx, temp);
-            if(this.newProfile.user.firstName() != null) {
+            if (this.newProfile.user.firstName() != null) {
                 this.etxtFirstName.setText(this.newProfile.user.firstName());
             }
 
-            if(this.newProfile.user.lastName() != null) {
-                this.etxtLastName.setText( this.newProfile.user.lastName() );
+            if (this.newProfile.user.lastName() != null) {
+                this.etxtLastName.setText(this.newProfile.user.lastName());
             }
-            if(this.newProfile.user.emailAddress() != null) {
+            if (this.newProfile.user.emailAddress() != null) {
                 this.etxtEmail.setText(this.newProfile.user.emailAddress());
             }
+        } else {
+            this.newProfile = new Profile(ctx);
         }
+
     }
 
     @Override
@@ -105,6 +103,7 @@ public class EditProfile extends Activity {
         String newString;
         that.setBackgroundResource(R.color.primaryLight);
 
+        /* null sensitive  */
         v = this.etxtFirstName;
         dummy = getResources().getString(R.string.text_first_name);
         oldString = this.newProfile.user.firstName();
@@ -139,11 +138,29 @@ public class EditProfile extends Activity {
             }
         }
 
+        /* null non-sensitive  */
+        v = this.etxtEmail;
+        dummy = getResources().getString(R.string.text_e_mail);
+        oldString = this.newProfile.user.emailAddress();
+        if(v.getText().toString() == null || v.getText().toString().trim().isEmpty()
+                || v.getText().toString().trim().equals(dummy) ) {
+            if(oldString != null) {
+                changed = true;
+                this.newProfile.user.emailAddress(null);
+            }
+        } else {
+            newString = v.getText().toString().trim();
+            if(oldString == null || !oldString.equals(newString)) {
+                changed = true;
+                this.newProfile.user.emailAddress(newString);
+            }
+        }
 
         if(changed) {
             try {
                 this.newProfile.save();
                 Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
+
 
             } catch (IOException e) {
                 //ignore

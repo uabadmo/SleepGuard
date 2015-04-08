@@ -60,7 +60,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:inputType="phone" />
+                android:inputType="textPersonName" />
 
             <EditText
                 android:layout_width="wrap_content"
