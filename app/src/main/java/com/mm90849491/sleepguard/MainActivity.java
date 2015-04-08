@@ -22,7 +22,6 @@ import java.util.Comparator;
 
 public class MainActivity extends ActionBarActivity {
     private ArrayList<Profile> profiles;
-    //private PlaceholderFragment pFragment = new PlaceholderFragment();
     private ProfileList pList;
     private Setting config;
     private Record recorder = null;
@@ -79,18 +78,6 @@ public class MainActivity extends ActionBarActivity {
             startActivity( that );
         }
 
-        boolean debugmode = false;
-
-        /* clean */
-        if(debugmode) {
-           this.clearProfile();
-        }
-
-        /* test */
-        if(debugmode) {
-            this.dummyProfile();
-        }
-
         this.pList = new ProfileList();
         this.getFragmentManager().beginTransaction()
                 .add(R.id.container, this.pList)
@@ -108,9 +95,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void refresh() {
         File[] files = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
-
             public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
+                return name.toLowerCase().endsWith(".sg");
             }
         });
         sort(files);
@@ -200,7 +186,7 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_clear_setting:
                 this.clearSetting();
-
+                this.refresh();
                 Toast.makeText(MainActivity.this, "Setting Cleared", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_clear_profile:
