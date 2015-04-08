@@ -55,6 +55,8 @@ public class Profile {
             this.doctor = (Clinician) ois.readObject();
             ois.close();
         } catch (IOException | ClassNotFoundException e) {
+            this.user = new Client();
+            this.doctor = new Clinician("mobA");
         }
     }
 

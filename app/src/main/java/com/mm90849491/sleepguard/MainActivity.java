@@ -21,7 +21,7 @@ import java.util.Comparator;
 
 
 public class MainActivity extends ActionBarActivity {
-    private ArrayList<Profile> profiles = new ArrayList<Profile>();
+    private ArrayList<Profile> profiles;
     //private PlaceholderFragment pFragment = new PlaceholderFragment();
     private ProfileList pList;
     private Setting config;
@@ -71,7 +71,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void init() {
         this.ctx = this.getApplicationContext();
-        clearProfile();
+        //clearProfile();
         this.config = new Setting(this.ctx);
         if( this.config.load() ) {
             Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
@@ -91,72 +91,19 @@ public class MainActivity extends ActionBarActivity {
             this.dummyProfile();
         }
 
-        /* normal init sequence */
-        File[] files = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
-
-            public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".sg");// gets only .sg extension files.
-            }
-        });
-        sort(files);
-
-        int i = 0;
-        for(File x : files) {
-            try{
-                File temp = x;
-                if(Profile.readSN(x.getName()) != i) {
-                    if(debugmode) {
-                        System.out.println("Reindex");
-                    }
-                    temp = new File(Profile.saveName(i));
-                    x.renameTo(temp);
-                }
-                this.profiles.add(new Profile(this.ctx, temp));
-                i++;
-                if(debugmode) {
-                    System.out.println(temp.getName());
-                }
-            } catch (NumberFormatException e) {
-            }
-        }
-
-        /* exam output */
-        if(debugmode) {
-            System.out.println(">>>IMPORTING<<<");
-            for (Profile x : this.profiles) {
-                System.out.println(x.serialNumber());
-                System.out.println(x.user.toString());
-            }
-            Profile d = new Profile(this.ctx);
-            try {
-                d.save();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (d.delete()) {
-                System.out.println("D Deleted.");
-            } else {
-                System.out.println("Failed.");
-            }
-            System.out.println("Done.");
-        }
-
-
-        if(this.profiles != null) {
-            /* construct list view */
-            this.pList = new ProfileList();
-            this.pList.setProfiles(this.profiles);
-            this.getFragmentManager().beginTransaction()
-                    .add(R.id.container, this.pList)
-                    .commit();
-
-        }
+        this.pList = new ProfileList();
+        this.getFragmentManager().beginTransaction()
+                .add(R.id.container, this.pList)
+                .commit();
     }
 
     private void clearFragment() {
-        this.getFragmentManager().beginTransaction()
-                .remove(this.getFragmentManager().findFragmentById(R.id.container))
-                .commit();
+        Fragment that = this.getFragmentManager().findFragmentById(R.id.container);
+        if(that != null) {
+            this.getFragmentManager().beginTransaction()
+                    .remove(that)
+                    .commit();
+        }
     }
 
     private void refresh() {
@@ -168,22 +115,22 @@ public class MainActivity extends ActionBarActivity {
         });
         sort(files);
 
-        int i = 0;
-        for(File x : files) {
-            try{
-                File temp = x;
-                if(Profile.readSN(x.getName()) != i) {
-                    temp = new File(Profile.saveName(i));
-                    x.renameTo(temp);
+        if(files.length > 0) {
+            this.profiles = new ArrayList<Profile>();
+            int i = 0;
+            for (File x : files) {
+                try {
+                    File temp = x;
+                    if (Profile.readSN(x.getName()) != i) {
+                        temp = new File(this.ctx.getFilesDir(), Profile.saveName(i));
+                        x.renameTo(temp);
+                    }
+                    this.profiles.add(new Profile(this.ctx, temp));
+                    i++;
+                } catch (NumberFormatException e) {
                 }
-                this.profiles.add(new Profile(this.ctx, temp));
-                i++;
-            } catch (NumberFormatException e) {}
-        }
+            }
 
-        if(this.profiles == null) {
-            this.clearFragment();
-        } else {
             this.pList = new ProfileList();
             this.pList.setProfiles(this.profiles);
             this.getFragmentManager().beginTransaction()
@@ -229,6 +176,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        this.clearFragment();
         this.refresh();
     }
 

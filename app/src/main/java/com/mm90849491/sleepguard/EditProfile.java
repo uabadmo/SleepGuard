@@ -31,7 +31,7 @@ public class EditProfile extends Activity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                this.fileName = null;
+                this.fileName = Profile.saveName(99);
             } else {
                 this.fileName = extras.getString(NEW_PROFILE);
             }
@@ -49,25 +49,23 @@ public class EditProfile extends Activity {
     protected void  onStart() {
         super.onStart();
         Context ctx = this.getApplicationContext();
-        if(this.fileName == null) {
-            this.newProfile = new Profile(ctx);
-            this.newProfile.user = new Client();
-            this.newProfile.doctor = new Clinician("");
-
-        } else {
-            File temp = new File(ctx.getFilesDir(), this.fileName);
+        File temp = new File(ctx.getFilesDir(), this.fileName);
+        if(temp.exists()) {
             this.newProfile = new Profile(ctx, temp);
-            if(this.newProfile.user.firstName() != null) {
+            if (this.newProfile.user.firstName() != null) {
                 this.etxtFirstName.setText(this.newProfile.user.firstName());
             }
 
-            if(this.newProfile.user.lastName() != null) {
-                this.etxtLastName.setText( this.newProfile.user.lastName() );
+            if (this.newProfile.user.lastName() != null) {
+                this.etxtLastName.setText(this.newProfile.user.lastName());
             }
-            if(this.newProfile.user.emailAddress() != null) {
+            if (this.newProfile.user.emailAddress() != null) {
                 this.etxtEmail.setText(this.newProfile.user.emailAddress());
             }
+        } else {
+            this.newProfile = new Profile(ctx);
         }
+
     }
 
     @Override
