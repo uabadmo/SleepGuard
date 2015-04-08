@@ -24,11 +24,14 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
     //private PlaceholderFragment pFragment = new PlaceholderFragment();
     private ProfileList pList;
+    private Setting config;
     private Record recorder = null;
     private boolean isRecording;
 
     private void init() {
         Context ctx = this.getApplicationContext();
+        this.config = new Setting(ctx);
+
         boolean debugmode = false;
 
         /* clean */
@@ -151,7 +154,16 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "New Profile", Toast.LENGTH_SHORT).show();
                 Intent that = new Intent(getApplicationContext(), EditProfile.class);
-                //that.putExtra( EditProfile.NEW_PROFILE, "");
+                startActivity( that );
+            }
+        });
+
+        ImageButton btnManual = (ImageButton)findViewById(R.id.btnManual);
+        btnManual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Manual", Toast.LENGTH_SHORT).show();
+                Intent that = new Intent(getApplicationContext(), HelpDesk.class );
                 startActivity( that );
             }
         });

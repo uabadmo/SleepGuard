@@ -34,6 +34,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mm90849491.sleepguard.MainActivity" />
         </activity>
+        <activity
+            android:name=".HelpDesk"
+            android:label="@string/title_activity_help_desk"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mm90849491.sleepguard.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -6,9 +6,11 @@
     <string name="action_profile">Profiles</string>
     <string name="title_activity_edit_profile">New Profile</string>
     <string name="title_activity_diagnosis_manager">Diagnosis Manager</string>
+    <string name="title_activity_help_desk">Manual</string>
 
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
+    <string name="button_close">Close</string>
 
     <string name="text_first_name">First name</string>
     <string name="text_last_name">Last name</string>
@@ -17,6 +19,6 @@
     <string name="text_prefix">Prefix</string>
     <string name="text_phone_number">Phone Number</string>
     <string name="text_phone_extension">Phone Extension</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello newbie!</string>
 
 </resources>

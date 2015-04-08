@@ -28,6 +28,18 @@ public class Setting {
         this.ini = new File(that.getFilesDir(), SAVEDATA);
     }
 
+    protected void lastOpen(boolean flag) {
+        this.lastOpen = flag;
+    }
+
+    protected void lockMode(boolean flag) {
+        this.lockMode = flag;
+    }
+
+    protected void primary(int that) {
+        this.primary = that;
+    }
+
     protected boolean load() {
         boolean exist = this.ini.exists();
         if(!exist) {
@@ -42,14 +54,14 @@ public class Setting {
                 byte mask = 0b1000000;
                 in = new FileInputStream(this.ini);
                 buf = new BufferedInputStream(in);
-                buf.read();
+                buf.read(temp);
                 this.lastOpen = ( (mask & temp[0]) == mask);
-                mask = 0b10000;
+                mask = 0b100000;
                 this.lockMode = ( (mask & temp[0]) == mask);
 
                 this.primary = 0;
                 for(int i = 0; i < Integer.SIZE; i++ ) {
-                    this.primary ^= (temp[i + 1] & 0xFF) << (i*8);
+                    this.primary ^= (temp[Integer.SIZE - i] & 0xFF) << (i*8);
                 }
             } catch (IOException e) {
                 exist = false;
@@ -79,7 +91,7 @@ public class Setting {
         BufferedOutputStream buf = null;
         byte mask = 0b1000000;
         byte flag = 0b0;
-        if(this.changed) {
+        if(this.lastOpen) {
             flag ^= mask;
         }
         mask = 0b100000;

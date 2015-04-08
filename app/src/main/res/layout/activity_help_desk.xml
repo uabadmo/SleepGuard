@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.mm90849491.sleepguard.HelpDesk"
+    android:paddingLeft="@dimen/activity_vertical_margin">
+
+    <ImageButton
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:id="@+id/btnCloseManual"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/oval_ripple"
+        android:focusableInTouchMode="false"
+        android:contentDescription="@string/button_close"
+        android:onClick="btnClose"
+        android:stateListAnimator="@anim/button_elevation"
+        android:src="@android:drawable/ic_delete"
+        android:tint="@android:color/white"
+        android:layout_marginTop="@dimen/add_button_margin" />
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+</RelativeLayout>
