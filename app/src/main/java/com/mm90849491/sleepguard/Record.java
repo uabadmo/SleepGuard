@@ -19,15 +19,15 @@ import android.util.Log;
 
 public class Record {
     /* ------------ beginning of constant variables ------------ */
-    static private int[] frequencyAvailable = {0, 8000, 32000, 44100, 48000};
-    static private int frUsed = frequencyAvailable[2];
+    static protected int[] frequencyAvailable = {0, 8000, 32000, 44100, 48000};
     /* ------------------ end of constant variables ------------ */
 
     /* ------------ beginning of instance variables ------------ */
-    private AudioRecord re = null;
+    private int frUsed;
+    private AudioRecord re;
     private boolean isRecording;
-    private Thread thr = null;
-    private FileOutputStream out = null;
+    private Thread thr;
+    private FileOutputStream out;
     private int bufferSize;
     private String _targetPath;
     private String _targetFilename;
@@ -70,17 +70,18 @@ public class Record {
     /** Constructs the Record instance.
      */
     public Record() {
-        bufferSize = AudioRecord.getMinBufferSize(
-                frUsed,
+        this.frUsed = 2;
+        this.bufferSize = AudioRecord.getMinBufferSize(
+                this.frUsed,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
 
-        re = new AudioRecord(
+        this.re = new AudioRecord(
                 MediaRecorder.AudioSource.MIC,
-                frUsed,
+                this.frUsed,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                bufferSize);
+                this.bufferSize);
     }
     /* ------------------ end of constructors ------------------ */
 
@@ -105,8 +106,6 @@ public class Record {
         isRecording = false;
         re.stop();
         re.release();
-        re = null;
-        thr = null;
     }
     /* ------------------ end of public methods ---------------- */
 
@@ -212,74 +211,4 @@ public class Record {
         }
     }
     /* ------------------ end of private methods --------------- */
-
-
-    /*
-     * Meng, these are the variables you wrote -- I won't delete them until later when we sure
-     * that we won't need them or whatever.
-     */
-    /*
-    private File _targetDirectory;
-    private String _targetName;
-    private String _targetExtension;
-    /* char == unsigned int /
-    private char _bitRate = 32; // ??
-    /* Default(device recording setting) 32000 44100 48000 /
-    private byte _frequencyLevel = 0;
-    private Result _result;
-
-    /**
-     *
-     * @return File _targetDirectory
-     /
-    public File targetDirectory() {
-        return _targetDirectory;
-    }
-
-    /**
-     *
-     * @param :File _targetDirectory
-     /
-    public void targetDirectory(File _targetDirectory) {
-        this._targetDirectory = _targetDirectory;
-    }
-
-    public String targetName() {
-        return _targetName;
-    }
-
-    public void targetName(String _targetName) {
-        this._targetName = _targetName;
-    }
-
-    public String targetExtension() {
-        return _targetExtension;
-    }
-
-    public void targetExtension(String _targetExtension) {
-        this._targetExtension = _targetExtension;
-    }
-
-    public char bitRate() {
-        return _bitRate;
-    }
-    public void bitRate(char _bitRate) {
-        this._bitRate = _bitRate;
-    }
-
-    public byte frequencyLevel() {
-        return _frequencyLevel;
-    }
-    public void frequencyLevel(byte _frequencyLevel) {
-        this._frequencyLevel = _frequencyLevel;
-    }
-
-    /**
-     *
-     * @return int sampling frequency
-     /
-    public int frequency() {
-        return Record.frequencyAvailable[this.frequencyLevel()];
-    }
-    */
 }

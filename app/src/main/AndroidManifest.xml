@@ -50,6 +50,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mm90849491.sleepguard.MainActivity" />
         </activity>
+        <activity
+            android:name=".AndroidExplorer"
+            android:label="@string/title_activity_android_explorer" >
+        </activity>
     </application>
 
 </manifest>
