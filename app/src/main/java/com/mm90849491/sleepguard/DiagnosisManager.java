@@ -1,28 +1,146 @@
 package com.mm90849491.sleepguard;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 
 public class DiagnosisManager extends ActionBarActivity {
+    public final static String DISPLAY_NAME = "com.mm90849491.sleepguard.DISPLAY_NAME";
+    private ArrayList<Schedule> schedules;
+    private DiagnosisList dList;
+    private Context ctx;
+    private String displayName;
+
+
+    private void init() {
+        this.ctx = this.getApplicationContext();
+
+        this.dList = new DiagnosisList();
+        this.getFragmentManager().beginTransaction()
+                .add(R.id.container, this.dList)
+                .commit();
+    }
+
+    private void clearFragment() {
+        android.app.Fragment that = this.getFragmentManager().findFragmentById(R.id.container);
+        if(that != null) {
+            this.getFragmentManager().beginTransaction()
+                    .remove(that)
+                    .commit();
+        }
+    }
+
+    private void refresh() {
+        /*
+        File[] files = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".sg");
+            }
+        });
+        MainActivity.sort(files);
+
+        if(files.length > 0) {
+            this.schedules = new ArrayList<Schedule>();
+            int i = 0;
+            for (File x : files) {
+                try {
+                    File temp = x;
+                    if (Profile.readSN(x.getName()) != i) {
+                        temp = new File(this.ctx.getFilesDir(), Profile.saveName(i));
+                        x.renameTo(temp);
+                    }
+                    this.schedules.add(new Schedule(this.ctx, temp));
+                    i++;
+                } catch (NumberFormatException e) {
+                }
+            }
+
+            this.dList = new DiagnosisList();
+            this.dList.setProfiles(this.schedules );
+            this.getFragmentManager().beginTransaction()
+                    .replace(R.id.container, this.dList)
+                    .commit();
+        }
+        */
+        this.schedules = new ArrayList<Schedule>();
+        this.schedules.add(new Schedule());
+        this.dList = new DiagnosisList();
+        this.dList.setProfiles(this.schedules );
+        this.getFragmentManager().beginTransaction()
+                .replace(R.id.container, this.dList)
+                .commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diagnosis_manager);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                this.displayName = "John Smith";
+            } else {
+                this.displayName = extras.getString(DISPLAY_NAME);
+            }
+            this.init();
+        } else {
+            this.displayName = (String) savedInstanceState.getSerializable(DISPLAY_NAME);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        TextView txtCurrent = (TextView) findViewById(R.id.txtCurrentUser);
+        txtCurrent.setText(this.displayName);
+
+        /*
+        ImageButton btnNewProfile = (ImageButton)findViewById(R.id.btnNewProfile);
+        btnNewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "New Profile", Toast.LENGTH_SHORT).show();
+                Intent that = new Intent(getApplicationContext(), EditProfile.class);
+                startActivity( that );
+            }
+        });
+
+        ImageButton btnManual = (ImageButton)findViewById(R.id.btnManual);
+        btnManual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Manual", Toast.LENGTH_SHORT).show();
+                Intent that = new Intent(getApplicationContext(), HelpDesk.class );
+                startActivity( that );
+            }
+        });
+        */
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.clearFragment();
+        this.refresh();
     }
 
 
@@ -46,21 +164,5 @@ public class DiagnosisManager extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_diagnosis_manager, container, false);
-            return rootView;
-        }
     }
 }

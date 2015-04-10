@@ -22,6 +22,8 @@
     <string name="text_prefix">Prefix</string>
     <string name="text_phone_number">Phone Number</string>
     <string name="text_phone_extension">Phone Extension</string>
+    <string name="text_scheduling_date">Create Date</string>
+
     <string name="hello_world">Hello newbie!</string>
 
 </resources>

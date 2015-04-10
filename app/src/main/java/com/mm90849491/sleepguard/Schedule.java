@@ -18,6 +18,12 @@ package com.mm90849491.sleepguard;
  */
 
 import android.os.Handler;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Calendar;
@@ -29,7 +35,8 @@ import android.util.Log;
  *  @author M.Harrison
  *  @see com.mm90849491.sleepguard.Schedule
  */
-public class Schedule {
+public class Schedule implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /* ------------ beginning of constant variables ------------ */
     static private int HOURS_PER_DAY = 24;
@@ -241,21 +248,40 @@ public class Schedule {
         recordingDuration(addMillisForDuration);
     }
 
+
     /*
     * Like in Record - I'll leave these available in case they're needed.
      */
-    /* UTC: [-1200: 30: +1400] /
+    /* UTC: [-1200: 30: +1400] */
     private int timeZone = -800;
+    private GregorianCalendar upTime;
     private GregorianCalendar startTime;
     private GregorianCalendar endTime;
     private boolean dayLightSaving = false;
     private boolean active = true;
+
+    public Schedule() {
+        String[] ids = TimeZone.getAvailableIDs(-8 * 60 * 60 * 1000);
+        SimpleTimeZone pdt = (this.dayLightSaving) ? new SimpleTimeZone(-8 * 60 * 60 * 1000, ids[0]) : new SimpleTimeZone(-7 * 60 * 60 * 1000, ids[0]) ;
+        this.upTime = new GregorianCalendar(pdt);
+        Date today = new Date();
+        this.upTime.setTime(today);
+    }
 
     public Schedule(int timeZone, GregorianCalendar startTime, GregorianCalendar endTime, boolean dayLightSaving) {
         this.timeZone = timeZone;
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayLightSaving = dayLightSaving;
+    }
+
+    protected String getTime() {
+        return String.format("%d %d %d %d:%d", this.upTime.get(Calendar.YEAR),
+                                                   this.upTime.get(Calendar.MONTH),
+                this.upTime.get(Calendar.DATE),
+                this.upTime.get(Calendar.HOUR),
+                this.upTime.get(Calendar.MINUTE)
+        );
     }
 
     public int getTimeZone() {
@@ -278,7 +304,7 @@ public class Schedule {
      *
      * @param startTime
      * @param duration HH * 100 + MM
-     /
+     */
     public void setStartTime(GregorianCalendar startTime, int duration) {
         this.setStartTime(startTime);
         this.endTime.add(Calendar.MINUTE, -(duration % 100));
@@ -297,7 +323,7 @@ public class Schedule {
      *
      * @param endTime
      * @param duration HH * 100 + MM
-     /
+     */
     public void setEndTime(GregorianCalendar endTime, int duration) {
         this.setEndTime(endTime);
         this.endTime.add(Calendar.MINUTE, duration % 100);
@@ -319,5 +345,5 @@ public class Schedule {
     public void setActive(boolean active) {
         this.active = active;
     }
-    */
+
 }

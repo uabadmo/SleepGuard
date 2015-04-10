@@ -27,8 +27,6 @@ public class Profile {
     /* ------------ begin of instance variables ------------ */
     protected Client user;
     protected Clinician doctor;
-    private Record[] _record;
-    private Schedule[] _schedule;
     /* ---------------- constant variables ----------------- */
     final private int _SN;
     final private Context _CTX;

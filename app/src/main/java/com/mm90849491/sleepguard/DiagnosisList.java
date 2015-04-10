@@ -37,19 +37,18 @@ public class DiagnosisList extends Fragment implements ListView.OnItemClickListe
      * Views.
      */
     private ListAdapter mAdapter;
-    private String[] strListView;
-    private ArrayList<Profile> profiles;
+    private ArrayList<Schedule> schedules;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public DiagnosisList() {
-        this.profiles = null;
+        this.schedules = null;
     }
 
-    public void setProfiles(ArrayList<Profile> that) {
-        this.profiles = that;
+    public void setProfiles(ArrayList<Schedule> that) {
+        this.schedules = that;
     }
 
     @Override
@@ -61,20 +60,13 @@ public class DiagnosisList extends Fragment implements ListView.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_main, container, false);
+        View view = inflater.inflate(R.layout.activity_diagnosis_manager, container, false);
 
-        // Set the adapter
-        this.mListView = (ListView) view.findViewById(R.id.lstProfile);
-
-        // Set OnItemClickListener so we can be notified on item clicks
+        this.mListView = (ListView) view.findViewById(R.id.lstSchedule);
         this.mListView.setOnItemClickListener(this);
 
-        if (this.profiles != null) {
-            this.strListView = new String[this.profiles.size()];
-            for (int i = this.strListView.length - 1; i >= 0; i--) {
-                this.strListView[i] = this.profiles.get(i).user.firstName() + " " + this.profiles.get(i).user.lastName();
-            }
-            this.mAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, strListView);
+        if (this.schedules != null) {
+            this.mAdapter = new DiagnosisAdapter(this.getActivity(), R.layout.schedule_item, this.schedules);
             this.mListView.setAdapter(this.mAdapter);
         }
 
@@ -90,19 +82,6 @@ public class DiagnosisList extends Fragment implements ListView.OnItemClickListe
         Intent that = new Intent(view.getContext(), EditProfile.class);
         that.putExtra(EditProfile.NEW_PROFILE, Profile.saveName(position));
         startActivity(that);
-    }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
-        }
     }
 }
 
