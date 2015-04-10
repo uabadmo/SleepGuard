@@ -300,6 +300,18 @@ public class Schedule implements Serializable {
         this.startTime = startTime;
     }
 
+
+    public void advance(int duration) {
+        this.upTime.add(Calendar.MINUTE, -(duration % 100));
+        this.upTime.add(Calendar.HOUR, -(int)(duration / 100));
+    }
+
+    public void delay(int duration) {
+        this.upTime.add(Calendar.MINUTE, (duration % 100));
+        this.upTime.add(Calendar.HOUR, (int)(duration / 100));
+    }
+
+
     /**
      *
      * @param startTime

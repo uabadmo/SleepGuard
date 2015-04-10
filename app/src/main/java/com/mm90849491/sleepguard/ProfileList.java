@@ -97,17 +97,11 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         view.setBackgroundResource(R.color.listBackgroundOnclick);
         (new Handler()).postDelayed(new ClickEffect(view, R.color.listBackground), 100);
-        /*
-        Toast.makeText(view.getContext(), "Edit Profile", Toast.LENGTH_SHORT).show();
-        Intent that = new Intent(view.getContext(), EditProfile.class);
-        that.putExtra(EditProfile.NEW_PROFILE, Profile.saveName(position));
-        startActivity(that);
-        */
-        Intent that = new Intent(view.getContext(), DiagnosisManager.class);
-        //Bundle extras = new Bundle();
-        that.putExtra(DiagnosisManager.DISPLAY_NAME, ((TextView) view).getText().toString().trim() );
-        //extras.putString(EditProfile.NEW_PROFILE, Profile.saveName(position));
-        //that.putExtras(extras);
+        Intent that = new Intent(parent.getContext(), DiagnosisManager.class);
+        Bundle extras = new Bundle();
+        extras.putString(DiagnosisManager.DISPLAY_NAME, ((TextView) view).getText().toString().trim() );
+        extras.putString(EditProfile.NEW_PROFILE, Profile.saveName(position));
+        that.putExtras(extras);
         startActivity(that);
     }
 

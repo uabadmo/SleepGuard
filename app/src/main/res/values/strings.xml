@@ -6,10 +6,12 @@
     <string name="action_profile">Profiles</string>
     <string name="action_clear_setting">Clear Setting</string>
     <string name="action_clear_profile">Clear Profiles</string>
-    <string name="title_activity_edit_profile">New Profile</string>
+    <string name="title_activity_new_profile">New Profile</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
     <string name="title_activity_diagnosis_manager">Diagnosis Manager</string>
     <string name="title_activity_help_desk">Manual</string>
     <string name="title_activity_android_explorer">File Selector</string>
+    <string name="title_activity_setting">Setting</string>
 
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
@@ -23,7 +25,9 @@
     <string name="text_phone_number">Phone Number</string>
     <string name="text_phone_extension">Phone Extension</string>
     <string name="text_scheduling_date">Create Date</string>
+    <string name="text_dummy">John Smith</string>
 
     <string name="hello_world">Hello newbie!</string>
+    <string name="title_activity_scheduler">Diagnosis Detail</string>
 
 </resources>

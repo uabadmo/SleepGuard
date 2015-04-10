@@ -27,12 +27,26 @@ public class DiagnosisManager extends ActionBarActivity {
     private DiagnosisList dList;
     private Context ctx;
     private String displayName;
+    private String profileName;
+
+    TextView txtCurrent;
 
 
     private void init() {
         this.ctx = this.getApplicationContext();
+        Schedule nowee = new Schedule();
+        Schedule nowee1 = new Schedule();
+        Schedule nowee2 = new Schedule();
+        Schedule nowee3 = new Schedule();
         this.schedules = new ArrayList<Schedule>();
-        this.schedules.add(new Schedule());
+        this.schedules.add(nowee);
+        nowee1.advance(45);
+        this.schedules.add(nowee1);
+        nowee2.advance(45);
+        nowee2.delay(45);
+        this.schedules.add(nowee2);
+        nowee3.delay(45);
+        this.schedules.add(nowee3);
 
         this.dList = new DiagnosisList();
         this.dList.setSchedules(this.schedules );
@@ -93,19 +107,13 @@ public class DiagnosisManager extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diagnosis_manager);
-        //TextView txt2 = (TextView) findViewById(R.id.textView2);
-        if (savedInstanceState == null) {
-            this.init();
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                this.displayName = "John Smith";
-            } else {
-                this.displayName = extras.getString(DISPLAY_NAME);
-                //txt2.setText(extras.getString(EditProfile.NEW_PROFILE));
-            }
+        this.init();
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            this.displayName = "John Smith";
         } else {
-            this.displayName = (String) savedInstanceState.getSerializable(DISPLAY_NAME);
-            //txt2.setText( "dead");
+            this.displayName = extras.getString(DISPLAY_NAME);
+            this.profileName = extras.getString(EditProfile.NEW_PROFILE);
         }
     }
 
@@ -113,8 +121,8 @@ public class DiagnosisManager extends ActionBarActivity {
     public void onStart() {
         super.onStart();
 
-        TextView txtCurrent = (TextView) findViewById(R.id.txtCurrentUser);
-        txtCurrent.setText(this.displayName);
+        setTitle(this.displayName);
+        this.txtCurrent = (TextView) findViewById(R.id.txtCurrentUser);
 
         /*
         ImageButton btnNewProfile = (ImageButton)findViewById(R.id.btnNewProfile);
@@ -145,6 +153,7 @@ public class DiagnosisManager extends ActionBarActivity {
         super.onResume();
         this.clearFragment();
         this.refresh();
+        this.txtCurrent.setText(this.displayName);
     }
 
 
@@ -157,13 +166,14 @@ public class DiagnosisManager extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        Context ctx = this.getApplicationContext();
+        if (id == R.id.action_edit_profile) {
+            Toast.makeText(ctx, "Edit Profile", Toast.LENGTH_SHORT).show();
+            Intent that = new Intent(ctx, EditProfile.class);
+            that.putExtra(EditProfile.NEW_PROFILE, this.profileName);
+            startActivity(that);
             return true;
         }
 

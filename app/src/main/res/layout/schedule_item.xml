@@ -19,7 +19,9 @@
         android:typeface="monospace"
         android:layout_weight="2"
         android:gravity="center_vertical|fill_vertical"
-        android:background="@color/app_background" />
+        android:background="@color/app_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
 
     <ImageView
         android:layout_width="fill_parent"

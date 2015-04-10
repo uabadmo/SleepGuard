@@ -8,25 +8,19 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/lstSchedule"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="@dimen/abc_text_size_title_material" />
+        android:layout_gravity="bottom" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/txtCurrentUser"
-        android:textSize="@dimen/abc_text_size_title_material"
-        android:textStyle="bold"
-        android:background="#ffeaeaea"
-        android:layout_gravity="left|top" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/abc_text_size_title_material"
-        android:text="New Text"
-        android:id="@+id/textView2"
-        android:textSize="@dimen/abc_text_size_body_2_material"
-        android:layout_gravity="center_horizontal|bottom|right" />
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:layout_gravity="right|bottom"
+        android:tint="@android:color/white"
+        android:background="@drawable/oval_ripple"
+        android:src="@android:drawable/ic_input_add"
+        android:elevation="@dimen/elevation_low"
+        android:stateListAnimator="@anim/button_elevation"
+        android:contentDescription="@string/title_activity_edit_profile"
+        android:layout_margin="@dimen/add_button_margin" />
 
 </FrameLayout>
