@@ -47,7 +47,7 @@ public class DiagnosisList extends Fragment implements ListView.OnItemClickListe
         this.schedules = null;
     }
 
-    public void setProfiles(ArrayList<Schedule> that) {
+    public void setSchedules(ArrayList<Schedule> that) {
         this.schedules = that;
     }
 

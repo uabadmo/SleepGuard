@@ -276,10 +276,10 @@ public class Schedule implements Serializable {
     }
 
     protected String getTime() {
-        return String.format("%d %d %d %d:%d", this.upTime.get(Calendar.YEAR),
-                                                   this.upTime.get(Calendar.MONTH),
+        return String.format("%d-%d-%d %2d:%2d", this.upTime.get(Calendar.YEAR),
+                                                   this.upTime.get(Calendar.MONTH) + 1,
                 this.upTime.get(Calendar.DATE),
-                this.upTime.get(Calendar.HOUR),
+                this.upTime.get(Calendar.HOUR_OF_DAY),
                 this.upTime.get(Calendar.MINUTE)
         );
     }

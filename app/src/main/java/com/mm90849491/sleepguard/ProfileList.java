@@ -105,6 +105,7 @@ public class ProfileList extends Fragment implements ListView.OnItemClickListene
         */
         Intent that = new Intent(view.getContext(), DiagnosisManager.class);
         that.putExtra(EditProfile.NEW_PROFILE, Profile.saveName(position));
+        that.putExtra(DiagnosisManager.DISPLAY_NAME, ((TextView) view).getText());
         startActivity(that);
     }
 

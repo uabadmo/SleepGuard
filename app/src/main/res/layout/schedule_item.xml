@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:layout_width="fill_parent" android:layout_height="@dimen/abc_action_bar_default_height_material"
     android:columnCount="2"
     android:rowCount="1"
     android:gravity="center_vertical|fill_horizontal"
@@ -9,7 +9,7 @@
     android:id="@+id/schedule_item_layout">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:text="@string/text_scheduling_date"
         android:id="@+id/txtSchedulingDate"
@@ -22,14 +22,15 @@
         android:background="@color/app_background" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/imgStatus"
         android:layout_row="0"
         android:layout_column="1"
         android:layout_gravity="right"
         android:background="@color/app_background"
         android:src="@android:drawable/ic_menu_info_details"
-        android:tint="@android:color/holo_green_dark" />
+        android:tint="@android:color/holo_green_dark"
+        android:layout_weight="8" />
 
 </LinearLayout>

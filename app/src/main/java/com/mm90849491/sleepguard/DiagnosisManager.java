@@ -31,10 +31,13 @@ public class DiagnosisManager extends ActionBarActivity {
 
     private void init() {
         this.ctx = this.getApplicationContext();
+        this.schedules = new ArrayList<Schedule>();
+        this.schedules.add(new Schedule());
 
         this.dList = new DiagnosisList();
+        this.dList.setSchedules(this.schedules );
         this.getFragmentManager().beginTransaction()
-                .add(R.id.container, this.dList)
+                .add(R.id.diagnosisLayout, this.dList)
                 .commit();
     }
 
@@ -79,12 +82,10 @@ public class DiagnosisManager extends ActionBarActivity {
                     .commit();
         }
         */
-        this.schedules = new ArrayList<Schedule>();
-        this.schedules.add(new Schedule());
         this.dList = new DiagnosisList();
-        this.dList.setProfiles(this.schedules );
+        this.dList.setSchedules(this.schedules );
         this.getFragmentManager().beginTransaction()
-                .replace(R.id.container, this.dList)
+                .replace(R.id.diagnosisLayout, this.dList)
                 .commit();
     }
 
@@ -92,16 +93,19 @@ public class DiagnosisManager extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diagnosis_manager);
+        //TextView txt2 = (TextView) findViewById(R.id.textView2);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 this.displayName = "John Smith";
             } else {
                 this.displayName = extras.getString(DISPLAY_NAME);
+               // txt2.setText(extras.getString(EditProfile.NEW_PROFILE));
             }
             this.init();
         } else {
             this.displayName = (String) savedInstanceState.getSerializable(DISPLAY_NAME);
+            //txt2.setText( (String) savedInstanceState.getSerializable(EditProfile.NEW_PROFILE));
         }
     }
 
