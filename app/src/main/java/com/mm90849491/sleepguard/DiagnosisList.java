@@ -80,7 +80,7 @@ public class DiagnosisList extends Fragment implements ListView.OnItemClickListe
         (new Handler()).postDelayed(new ClickEffect(view, R.color.listBackground), 100);
         Toast.makeText(view.getContext(), "Edit Schedule", Toast.LENGTH_SHORT).show();
         Intent that = new Intent(parent.getContext(), Scheduler.class);
-        that.putExtra(EditProfile.NEW_PROFILE, Profile.saveName(position));
+        that.putExtra(Scheduler.NEW_SCHEDULE, this.mAdapter.getItem(position).toString() );
         startActivity(that);
     }
 }

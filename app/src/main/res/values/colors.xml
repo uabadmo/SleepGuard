@@ -6,4 +6,5 @@
     <color name="primaryLight">#668EB7CC</color>
     <color name="listBackground">#00FFFFFF</color>
     <color name="listBackgroundOnclick">#9937474F</color>
+    <color name="shadow">#ff959595</color>
 </resources>
