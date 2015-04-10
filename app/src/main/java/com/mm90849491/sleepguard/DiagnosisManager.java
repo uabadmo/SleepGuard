@@ -34,10 +34,10 @@ public class DiagnosisManager extends ActionBarActivity {
 
     private void init() {
         this.ctx = this.getApplicationContext();
-        Schedule nowee = new Schedule();
-        Schedule nowee1 = new Schedule();
-        Schedule nowee2 = new Schedule();
-        Schedule nowee3 = new Schedule();
+        Schedule nowee = new Schedule(this.ctx);
+        Schedule nowee1 = new Schedule(this.ctx);
+        Schedule nowee2 = new Schedule(this.ctx);
+        Schedule nowee3 = new Schedule(this.ctx);
         this.schedules = new ArrayList<Schedule>();
         this.schedules.add(nowee);
         nowee1.advance(45);
@@ -122,7 +122,6 @@ public class DiagnosisManager extends ActionBarActivity {
         super.onStart();
 
         setTitle(this.displayName);
-        this.txtCurrent = (TextView) findViewById(R.id.txtCurrentUser);
 
         /*
         ImageButton btnNewProfile = (ImageButton)findViewById(R.id.btnNewProfile);
@@ -153,7 +152,6 @@ public class DiagnosisManager extends ActionBarActivity {
         super.onResume();
         this.clearFragment();
         this.refresh();
-        this.txtCurrent.setText(this.displayName);
     }
 
 

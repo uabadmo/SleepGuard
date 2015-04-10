@@ -78,8 +78,8 @@ public class DiagnosisList extends Fragment implements ListView.OnItemClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         view.setBackgroundResource(R.color.listBackgroundOnclick);
         (new Handler()).postDelayed(new ClickEffect(view, R.color.listBackground), 100);
-        Toast.makeText(view.getContext(), "Edit Profile", Toast.LENGTH_SHORT).show();
-        Intent that = new Intent(view.getContext(), EditProfile.class);
+        Toast.makeText(view.getContext(), "Edit Schedule", Toast.LENGTH_SHORT).show();
+        Intent that = new Intent(parent.getContext(), Scheduler.class);
         that.putExtra(EditProfile.NEW_PROFILE, Profile.saveName(position));
         startActivity(that);
     }

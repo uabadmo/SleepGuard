@@ -1,12 +1,13 @@
 package com.mm90849491.sleepguard;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class Scheduler extends ActionBarActivity {
+public class Scheduler extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -57,7 +57,7 @@ public class DiagnosisAdapter extends BaseAdapter implements ListAdapter {
             TextView scheduleDate = (TextView) v.findViewById(R.id.txtSchedulingDate);
             ImageView scheduleStatus = (ImageView) v.findViewById(R.id.imgStatus);
             if(scheduleDate != null) {
-                scheduleDate.setText(s.getTime());
+                scheduleDate.setText(s.getID());
             }
             if(scheduleStatus != null) {
                 scheduleStatus.setColorFilter(R.color.primaryLight);

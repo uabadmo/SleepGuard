@@ -11,7 +11,7 @@
         android:layout_gravity="bottom" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnNewSchedule"
         android:layout_width="@dimen/round_button_diameter"
         android:layout_height="@dimen/round_button_diameter"
         android:layout_gravity="right|bottom"

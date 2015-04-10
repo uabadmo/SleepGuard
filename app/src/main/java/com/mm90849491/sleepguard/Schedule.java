@@ -17,16 +17,25 @@ package com.mm90849491.sleepguard;
  * Matt
  */
 
+import android.content.Context;
 import android.os.Handler;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Calendar;
+import java.util.regex.Pattern;
+
 import android.util.Log;
 
 /** Schedule class.
@@ -43,6 +52,8 @@ public class Schedule implements Serializable {
     static private int MINUTES_PER_HOUR = 60;
     static private int SECONDS_PER_MINUTE = 60;
     static private int MILLIS_PER_SECOND = 1000;
+    static private int DECI_S2H = 10 * 60 * 60;
+    static private String SERIAL = "(UTC%c%02d:%02d)%04d-%02d-%02d %02d:%02d@%02d.%03d";
     /* ------------------ end of constant variables ------------ */
 
     /* ------------ beginning of instance variables ------------ */
@@ -143,30 +154,6 @@ public class Schedule implements Serializable {
     public void recordingDuration(int input) { this._recordingDuration = input; }
     /* -------------------end of getter/setter methods --------- */
 
-    /* ------------ beginning of constructors ------------------ */
-    /** Constructs the Schedule instance.
-     * @param hourIn (int) The hour that the recording should start in 24-hour time.
-     * @param minuteIn (int) The minute that the recording should start in 24-hour time.
-     * @param durationHoursIn (int) The number of hours of the intended duration of the recording.
-     * @param durationMinutesIn (int) The remainder of minutes of the intended duration of the recording.
-     */
-    public Schedule(int hourIn, int minuteIn, int durationHoursIn, int durationMinutesIn) {
-        if (areValidTimes()) {
-            recorder = new Record();
-            isRecording = false;
-            hour(hourIn);
-            minute(minuteIn);
-            currentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-            currentMinute(Calendar.getInstance().get(Calendar.MINUTE));
-            durationHours(durationHoursIn);
-            durationMinutes(durationMinutesIn);
-            calculateTimes();
-            startTi();
-            Log.e("tagtag", "1");
-        }
-    }
-    /* ------------------ end of constructors ------------------ */
-
     /* ------------ beginning of public methods ---------------- */
 
     /** Checks that the input hour and minute are in the 24-hour clock.
@@ -254,34 +241,40 @@ public class Schedule implements Serializable {
      */
     /* UTC: [-1200: 30: +1400] */
     private int timeZone = -800;
-    private GregorianCalendar upTime;
-    private GregorianCalendar startTime;
-    private GregorianCalendar endTime;
-    private boolean dayLightSaving = false;
+    private Date upTime;
+    private Date startTime;
+    private Date endTime;
+    private boolean dayLightSaving = true;
     private boolean active = true;
+    private final Context _CTX;
 
-    public Schedule() {
-        String[] ids = TimeZone.getAvailableIDs(-8 * 60 * 60 * 1000);
-        SimpleTimeZone pdt = (this.dayLightSaving) ? new SimpleTimeZone(-8 * 60 * 60 * 1000, ids[0]) : new SimpleTimeZone(-7 * 60 * 60 * 1000, ids[0]) ;
-        this.upTime = new GregorianCalendar(pdt);
-        Date today = new Date();
-        this.upTime.setTime(today);
+
+    /* ------------ beginning of constructors ------------------ */
+    public Schedule(Context ctx) {
+        String[] ids = TimeZone.getAvailableIDs(this.timeZone * DECI_S2H);
+        SimpleTimeZone pdt = new SimpleTimeZone(this.timeZone * DECI_S2H, ids[0]);
+        this.upTime =  new Date();
+        this._CTX = ctx;
     }
 
-    public Schedule(int timeZone, GregorianCalendar startTime, GregorianCalendar endTime, boolean dayLightSaving) {
-        this.timeZone = timeZone;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.dayLightSaving = dayLightSaving;
+    public Schedule(Context ctx, File savedata) {
+        FileInputStream fin;
+        ObjectInputStream ois;
+        String that = savedata.getName().toString();
+        this._CTX = ctx;
+        this.upTime = new Date ( (new Timestamp( Long.valueOf(that) )).getTime() );
+        this.timeZone = getTimeZone(that);
+        try {
+            fin = new FileInputStream(savedata);
+            ois = new ObjectInputStream(fin);
+            ois.close();
+        } catch (IOException e) {
+        }
     }
+    /* ------------------ end of constructors ------------------ */
 
-    protected String getTime() {
-        return String.format("%d-%d-%d %2d:%2d", this.upTime.get(Calendar.YEAR),
-                                                   this.upTime.get(Calendar.MONTH) + 1,
-                this.upTime.get(Calendar.DATE),
-                this.upTime.get(Calendar.HOUR_OF_DAY),
-                this.upTime.get(Calendar.MINUTE)
-        );
+    protected String getID() {
+        return Schedule.toString(this.upTime, this.timeZone, this.dayLightSaving);
     }
 
     public int getTimeZone() {
@@ -292,23 +285,21 @@ public class Schedule implements Serializable {
         this.timeZone = timeZone;
     }
 
-    public GregorianCalendar getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(GregorianCalendar startTime) {
-        this.startTime = startTime;
-    }
-
 
     public void advance(int duration) {
-        this.upTime.add(Calendar.MINUTE, -(duration % 100));
-        this.upTime.add(Calendar.HOUR, -(int)(duration / 100));
+        GregorianCalendar date = new GregorianCalendar();
+        date.setTime(this.upTime);
+        date.add(Calendar.MINUTE, -(duration % 100));
+        date.add(Calendar.HOUR, -(duration / 100));
+        this.upTime = date.getTime();
     }
 
     public void delay(int duration) {
-        this.upTime.add(Calendar.MINUTE, (duration % 100));
-        this.upTime.add(Calendar.HOUR, (int)(duration / 100));
+        GregorianCalendar date = new GregorianCalendar();
+        date.setTime(this.upTime);
+        date.add(Calendar.MINUTE, (duration % 100));
+        date.add(Calendar.HOUR, (duration / 100));
+        this.upTime = date.getTime();
     }
 
 
@@ -318,17 +309,9 @@ public class Schedule implements Serializable {
      * @param duration HH * 100 + MM
      */
     public void setStartTime(GregorianCalendar startTime, int duration) {
-        this.setStartTime(startTime);
-        this.endTime.add(Calendar.MINUTE, -(duration % 100));
-        this.endTime.add(Calendar.HOUR, -(int)(duration / 100));
-    }
-
-    public GregorianCalendar getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(GregorianCalendar endTime) {
-        this.endTime = endTime;
+        //this.setStartTime(startTime);
+        //this.endTime.add(Calendar.MINUTE, -(duration % 100));
+        //this.endTime.add(Calendar.HOUR, -(int)(duration / 100));
     }
 
     /**
@@ -337,9 +320,9 @@ public class Schedule implements Serializable {
      * @param duration HH * 100 + MM
      */
     public void setEndTime(GregorianCalendar endTime, int duration) {
-        this.setEndTime(endTime);
-        this.endTime.add(Calendar.MINUTE, duration % 100);
-        this.endTime.add(Calendar.HOUR, (int)(duration / 100));
+        //this.setEndTime(endTime);
+        //this.endTime.add(Calendar.MINUTE, duration % 100);
+        //this.endTime.add(Calendar.HOUR, (int)(duration / 100));
     }
 
     public boolean isDayLightSaving() {
@@ -356,6 +339,53 @@ public class Schedule implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    protected static String toString(Date time, int timeZone, boolean dayLightSaving) {
+        String[] ids = TimeZone.getAvailableIDs(timeZone * DECI_S2H);
+        SimpleTimeZone pdt = new SimpleTimeZone(timeZone * DECI_S2H, ids[0]);
+        GregorianCalendar that = new GregorianCalendar(pdt);
+        that.setTime(time);
+        if(dayLightSaving) {
+            that.add(Calendar.HOUR, 1);
+        }
+        boolean neg = (timeZone < 0);
+        if(neg) timeZone = -timeZone;
+        return String.format(SERIAL,
+                                neg ? '-' : '+',
+                                timeZone / 100,
+                                timeZone % 100,
+                                that.get(Calendar.YEAR),
+                                that.get(Calendar.MONTH) + 1,
+                                that.get(Calendar.DATE),
+                                that.get(Calendar.HOUR_OF_DAY),
+                                that.get(Calendar.MINUTE),
+                                that.get(Calendar.SECOND),
+                                that.get(Calendar.MILLISECOND)
+                             );
+    }
+
+    protected static GregorianCalendar toTime(String that) {
+        int timeZone = getTimeZone(that);
+        String[] ids = TimeZone.getAvailableIDs(timeZone * DECI_S2H);
+        SimpleTimeZone pdt = new SimpleTimeZone(timeZone * DECI_S2H, ids[0]);
+        GregorianCalendar time = new GregorianCalendar(pdt);
+        time.set(Integer.valueOf(that.substring(11, 14)),
+                Integer.valueOf(that.substring(16, 17)) - 1,
+                Integer.valueOf(that.substring(19, 20)),
+                Integer.valueOf(that.substring(22, 23)),
+                Integer.valueOf(that.substring(25, 26)),
+                Integer.valueOf(that.substring(28, 29)));
+        time.set(Calendar.MILLISECOND, Integer.valueOf(that.substring(31)));
+        //01234 %02d 7 %02d 10 %04d 15 %02d 18 %02d 21 %02d 24 %02d 27 %02d 30 %03d;
+        return time;
+    }
+
+
+    protected static int getTimeZone(String that) {
+        int timeZone = Integer.valueOf(that.substring(5,6)) * 100 + Integer.valueOf(that.substring(8,9));
+        if(that.charAt(4) == '-') timeZone = -timeZone;
+        return timeZone;
     }
 
 }
