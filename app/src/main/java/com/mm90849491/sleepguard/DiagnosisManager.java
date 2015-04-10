@@ -95,17 +95,17 @@ public class DiagnosisManager extends ActionBarActivity {
         setContentView(R.layout.activity_diagnosis_manager);
         //TextView txt2 = (TextView) findViewById(R.id.textView2);
         if (savedInstanceState == null) {
+            this.init();
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 this.displayName = "John Smith";
             } else {
                 this.displayName = extras.getString(DISPLAY_NAME);
-               // txt2.setText(extras.getString(EditProfile.NEW_PROFILE));
+                //txt2.setText(extras.getString(EditProfile.NEW_PROFILE));
             }
-            this.init();
         } else {
             this.displayName = (String) savedInstanceState.getSerializable(DISPLAY_NAME);
-            //txt2.setText( (String) savedInstanceState.getSerializable(EditProfile.NEW_PROFILE));
+            //txt2.setText( "dead");
         }
     }
 

@@ -4,6 +4,13 @@
     tools:context="com.mm90849491.sleepguard.DiagnosisManager" tools:ignore="MergeRootFrame"
     android:background="#ff959595">
 
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/lstSchedule"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/abc_text_size_title_material" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,12 +27,6 @@
         android:text="New Text"
         android:id="@+id/textView2"
         android:textSize="@dimen/abc_text_size_body_2_material"
-        android:layout_gravity="center_horizontal|top" />
-
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/lstSchedule"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="center_horizontal|bottom|right" />
 
 </FrameLayout>
