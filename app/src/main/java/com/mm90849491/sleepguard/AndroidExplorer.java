@@ -43,6 +43,11 @@ public class AndroidExplorer extends ListActivity {
         }
     }
 
+    /**
+     * Gets directory of selected file
+     *
+     * @param dirPath
+     */
     private void getDir(File dirPath) {
         this.myPath.setText("Location: " + dirPath.getAbsolutePath() );
         this.item = new ArrayList<String>();
@@ -73,6 +78,13 @@ public class AndroidExplorer extends ListActivity {
         setListAdapter(fileList);
     }
 
+    /**
+     * Click listener for the paths listed in the explorer
+     * @param l
+     * @param v
+     * @param position
+     * @param id
+     */
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         File file = new File(path.get(position));
