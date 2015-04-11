@@ -27,13 +27,15 @@
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
         android:gravity="center"
-        android:layout_margin="1dp" />
+        android:layout_margin="1dp"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/activity_horizontal_margin_large"
         android:text="@string/button_save"
-        android:id="@+id/btnSave"
+        android:id="@+id/btnSaveS"
         android:background="@color/primary"
         android:textColor="@color/bright_foreground_inverse_material_light"
         android:textSize="@dimen/abc_text_size_large_material"
@@ -49,56 +51,34 @@
         android:layout_gravity="fill"
         android:gravity="center"
         android:layout_margin="1dp"
-        android:minHeight="@dimen/abc_text_size_large_material" />
+        android:minHeight="@dimen/abc_text_size_large_material"
+        android:layout_rowSpan="1"
+        android:layout_columnSpan="1" />
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/scrollViewS"
         android:layout_row="1"
         android:layout_column="0"
         android:layout_columnSpan="2"
-        android:background="@color/app_background">
+        android:background="@color/app_background"
+        android:layout_rowSpan="1">
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content"
+            android:background="#ffff6f36">
 
             <ExpandableListView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/expandableListView2" />
-
-            <ExpandableListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/expandableListView"
+                android:id="@+id/elvStatus"
                 android:layout_alignParentTop="false"
                 android:layout_alignParentLeft="false"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/expandableListView2" />
+                android:layout_alignParentStart="true" />
         </RelativeLayout>
     </ScrollView>
-
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/diagnosisTabs"
-        android:background="@color/shadow">
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/tabStatues">
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-        </TableRow>
-    </TableLayout>
 
 </GridLayout>
