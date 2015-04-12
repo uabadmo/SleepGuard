@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 /**
  * Created by alex on 07/04/15.
@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.mm90849491.sleepguard.R;
 
 
 public class AndroidExplorer extends ListActivity {

@@ -1,6 +1,8 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.Objects;
 
 import android.content.Context;
+
+import com.mm90849491.sleepguard.UI.Clinician;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,13 +22,13 @@ import java.io.ObjectOutputStream;
  */
 public class Profile {
     private static int serialNumber = 0;
-    protected static String prefix = "profile";
-    protected static String suffix = "sg";
-    protected static int digits = 2;
+    public static String prefix = "profile";
+    public static String suffix = "sg";
+    public static int digits = 2;
 
     /* ------------ begin of instance variables ------------ */
-    protected Client user;
-    protected Clinician doctor;
+    public Client user;
+    public Clinician doctor;
     /* ---------------- constant variables ----------------- */
     final private int _SN;
     final private Context _CTX;
@@ -67,7 +69,7 @@ public class Profile {
                 );
     }
 
-    protected void save() throws IOException {
+    public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream(
                 new File(this._CTX.getFilesDir() , saveName(this.serialNumber() )));
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -76,20 +78,20 @@ public class Profile {
         fos.close();
     }
 
-    protected boolean delete() {
+    public boolean delete() {
         File file = new File(this._CTX.getFilesDir(), saveName(this.serialNumber()));
         return file.delete();
     }
 
-    protected int serialNumber() {
+    public int serialNumber() {
         return this._SN;
     }
 
-    static protected String saveName(int that) {
+    static public String saveName(int that) {
         return prefix.concat(String.format("%0" + digits + "d", that)).concat(".").concat(suffix);
     }
 
-    static protected int readSN(String that) throws NumberFormatException {
+    static public int readSN(String that) throws NumberFormatException {
         return Integer.valueOf(that.substring(prefix.length(), prefix.length() + digits));
     }
 

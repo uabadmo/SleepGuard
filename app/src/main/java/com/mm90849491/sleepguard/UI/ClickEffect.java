@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 import android.view.View;
 

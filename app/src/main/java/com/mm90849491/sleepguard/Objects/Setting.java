@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.Objects;
 
 import android.content.Context;
 
@@ -30,41 +30,41 @@ public class Setting {
         this.ini = new File(that.getFilesDir(), SAVEDATA);
     }
 
-    protected boolean showFirstName() {
+    public boolean showFirstName() {
         return  this._showFirstName;
     }
 
-    protected boolean showLastName() {
+    public boolean showLastName() {
         return this._showLastName;
     }
 
-    protected void showFirstName(boolean flag) {
+    public void showFirstName(boolean flag) {
         this._showFirstName = flag;
     }
 
-    protected void showLastName(boolean flag) {
+    public void showLastName(boolean flag) {
         this._showLastName = flag;
     }
 
-    protected void lastOpen(boolean flag) {
+    public void lastOpen(boolean flag) {
         this.lastOpen = flag;
     }
 
-    protected void lockMode(boolean flag) {
+    public void lockMode(boolean flag) {
         this.lockMode = flag;
     }
 
-    protected void primary(int that) {
+    public void primary(int that) {
         this.primary = that;
     }
 
-    protected void delete() {
+    public void delete() {
         if( this.ini.exists() ) {
             this.ini.delete();
         }
     }
 
-    protected boolean load() {
+    public boolean load() {
         boolean exist = this.ini.exists();
         if(!exist) {
             this.changed = true;
@@ -118,7 +118,7 @@ public class Setting {
         return exist;
     }
 
-    protected void save() throws IOException {
+    public void save() throws IOException {
         FileOutputStream out = null;
         BufferedOutputStream buf = null;
         byte mask = 0b1000000;

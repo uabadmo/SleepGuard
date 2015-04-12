@@ -1,23 +1,27 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-public class SettingsActivity extends ActionBarActivity {
+import com.mm90849491.sleepguard.R;
+
+
+public class HelpDesk extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_help_desk);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_diagnosis_manager, menu);
+        getMenuInflater().inflate(R.menu.menu_help_desk, menu);
         return true;
     }
 
@@ -36,4 +40,7 @@ public class SettingsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void btnClose(View v) {
+        super.onBackPressed();
+    }
 }

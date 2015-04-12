@@ -1,4 +1,6 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
+
+import com.mm90849491.sleepguard.Objects.Person;
 
 import java.io.Serializable;
 

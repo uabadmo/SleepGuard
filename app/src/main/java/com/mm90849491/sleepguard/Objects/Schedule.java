@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.Objects;
 
 /* To Alex:
  * The schedule class is close, but it's still buggy.
@@ -28,13 +28,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Scanner;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Calendar;
-import java.util.regex.Pattern;
 
 import android.util.Log;
 
@@ -42,7 +40,7 @@ import android.util.Log;
  *      Schedules the instance of the Record class.
  *  @version 0.4.0
  *  @author M.Harrison
- *  @see com.mm90849491.sleepguard.Schedule
+ *  @see Schedule
  */
 public class Schedule implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -273,7 +271,7 @@ public class Schedule implements Serializable {
     }
     /* ------------------ end of constructors ------------------ */
 
-    protected String getID() {
+    public String getID() {
         return Schedule.toString(this.upTime, this.timeZone, this.dayLightSaving);
     }
 
@@ -341,7 +339,7 @@ public class Schedule implements Serializable {
         this.active = active;
     }
 
-    protected static String toString(Date time, int timeZone, boolean dayLightSaving) {
+    public static String toString(Date time, int timeZone, boolean dayLightSaving) {
         String[] ids = TimeZone.getAvailableIDs(timeZone * DECI_S2H);
         SimpleTimeZone pdt = new SimpleTimeZone(timeZone * DECI_S2H, ids[0]);
         GregorianCalendar that = new GregorianCalendar(pdt);
@@ -365,7 +363,7 @@ public class Schedule implements Serializable {
                              );
     }
 
-    protected static GregorianCalendar toTime(String that) {
+    public static GregorianCalendar toTime(String that) {
         int timeZone = getTimeZone(that);
         String[] ids = TimeZone.getAvailableIDs(timeZone * DECI_S2H);
         SimpleTimeZone pdt = new SimpleTimeZone(timeZone * DECI_S2H, ids[0]);
@@ -382,7 +380,7 @@ public class Schedule implements Serializable {
     }
 
 
-    protected static int getTimeZone(String that) {
+    public static int getTimeZone(String that) {
         int timeZone = Integer.valueOf(that.substring(5,7)) * 100 + Integer.valueOf(that.substring(8,10));
         if(that.charAt(4) == '-') timeZone = -timeZone;
         return timeZone;

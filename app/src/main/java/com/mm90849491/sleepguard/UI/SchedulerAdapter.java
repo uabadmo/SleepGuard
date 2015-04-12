@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mm90849491.sleepguard.R;
 
 import java.util.HashMap;
 import java.util.List;

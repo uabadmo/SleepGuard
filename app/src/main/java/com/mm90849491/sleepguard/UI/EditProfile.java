@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,10 +7,11 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mm90849491.sleepguard.Objects.Profile;
+import com.mm90849491.sleepguard.R;
 
 import java.io.File;
 import java.io.IOException;

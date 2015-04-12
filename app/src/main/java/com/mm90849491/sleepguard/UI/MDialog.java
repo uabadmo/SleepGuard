@@ -1,9 +1,8 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Handler;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.TextView;

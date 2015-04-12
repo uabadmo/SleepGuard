@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.Objects;
 
 
 import java.io.Serializable;
@@ -33,7 +33,7 @@ public abstract class Person implements Serializable {
      *
      * @return String
      */
-    protected String firstName() {
+    public String firstName() {
         return this._firstName;
     }
 
@@ -41,7 +41,7 @@ public abstract class Person implements Serializable {
      *
      * @return String
      */
-    protected String lastName() {
+    public String lastName() {
         return this._lastName;
     }
 
@@ -49,7 +49,7 @@ public abstract class Person implements Serializable {
      *
      * @return String
      */
-    protected String middleName() {
+    public String middleName() {
         return this._middleName;
     }
 
@@ -57,7 +57,7 @@ public abstract class Person implements Serializable {
      *      Caller is responsible to format it.
      * @return String
      */
-    protected String phoneNumber() {
+    public String phoneNumber() {
         String buffer = null;
         if(this._phoneNumber != null) {
             for(byte digit : this._phoneNumber ) {
@@ -71,7 +71,7 @@ public abstract class Person implements Serializable {
      *
      * @return String
      */
-    protected String phoneExtension() {
+    public String phoneExtension() {
         String buffer = null;
         if(this._phoneExtension != null) {
             for(byte digit : this._phoneExtension ) {
@@ -85,7 +85,7 @@ public abstract class Person implements Serializable {
      *
      * @return String
      */
-    protected String prefix() {
+    public String prefix() {
         return this._prefix;
     }
 
@@ -93,7 +93,7 @@ public abstract class Person implements Serializable {
      *
      * @return String
      */
-    protected String emailAddress() {
+    public String emailAddress() {
         return this._emailAddress;
     }
     /* --------------- end of getter methods --------------- */
@@ -103,7 +103,7 @@ public abstract class Person implements Serializable {
      *
      * @param firstName String.
      */
-    protected void firstName(String firstName) {
+    public void firstName(String firstName) {
         if(firstName == null) {
             this._firstName = Person.DEF_FIRST_NAME;
         } else {
@@ -115,7 +115,7 @@ public abstract class Person implements Serializable {
      *
      * @param lastName String.
      */
-    protected void lastName(String lastName) {
+    public void lastName(String lastName) {
         if(lastName == null) {
             this._lastName = Person.DEF_LAST_NAME;
         } else {
@@ -127,7 +127,7 @@ public abstract class Person implements Serializable {
      *
      * @param middleName String.
      */
-    protected void middleName(String middleName) {
+    public void middleName(String middleName) {
         this._middleName = middleName;
     }
 
@@ -135,7 +135,7 @@ public abstract class Person implements Serializable {
      *
      * @param prefix String.
      */
-    protected void prefix(String prefix) {
+    public void prefix(String prefix) {
         if(prefix == null) {
             this._prefix = Person.DEF_PREFIX;
         } else {
@@ -148,7 +148,7 @@ public abstract class Person implements Serializable {
      * @param phoneNumber String.
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
-    protected void phoneNumber(String phoneNumber) throws NumberFormatException {
+    public void phoneNumber(String phoneNumber) throws NumberFormatException {
         this._phoneNumber = null;
         if(_phoneNumber != null) {
             int temp;
@@ -173,7 +173,7 @@ public abstract class Person implements Serializable {
      * @param phoneExtension String.
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
-    protected void phoneExtension(String phoneExtension) throws NumberFormatException {
+    public void phoneExtension(String phoneExtension) throws NumberFormatException {
         this._phoneExtension = null;
         if(phoneExtension != null) {
             int temp;
@@ -198,7 +198,7 @@ public abstract class Person implements Serializable {
      * @param emailAddress String.
      * @throws NumberFormatException error message needs to be prompted by UI.
      */
-    protected void emailAddress(String emailAddress) throws NumberFormatException {
+    public void emailAddress(String emailAddress) throws NumberFormatException {
         this._emailAddress = null;
         if(emailAddress != null) {
             if (!emailAddress.contains("@")) {
@@ -216,7 +216,7 @@ public abstract class Person implements Serializable {
     /** Default constructor of Client.
      *    Generate a name for lazy users.
      */
-    protected Person() {
+    public Person() {
         this.firstName( DEF_FIRST_NAME );
         this.lastName( DEF_LAST_NAME );
         this.prefix( DEF_PREFIX );
@@ -232,7 +232,7 @@ public abstract class Person implements Serializable {
      * @param phoneExtension String throws NumberFormatException.
      * @param emailAddress String throws NumberFormatException.
      */
-    protected Person(String firstName, String lastName, String middleName, String prefix,
+    public Person(String firstName, String lastName, String middleName, String prefix,
                       String phoneNumber, String phoneExtension, String emailAddress) {
         this.firstName( firstName );
         this.lastName( lastName );
@@ -244,7 +244,7 @@ public abstract class Person implements Serializable {
     }
     /* ---------------- end of constructors ---------------- */
 
-    /* ------------- begin of protected methods ------------ */
+    /* ------------- begin of public methods ------------ */
 
     @Override
     public String toString() {
@@ -257,7 +257,7 @@ public abstract class Person implements Serializable {
                 .append(":").append( this.emailAddress() )
                 .toString();
     }
-    /* -------------- end of protected methods ------------- */
+    /* -------------- end of public methods ------------- */
 
 
 }

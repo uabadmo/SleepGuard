@@ -1,7 +1,6 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import com.mm90849491.sleepguard.R;
+import com.mm90849491.sleepguard.Objects.Schedule;
 
 import java.util.ArrayList;
 

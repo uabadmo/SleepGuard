@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 
 import android.app.Fragment;
@@ -10,8 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mm90849491.sleepguard.Objects.Profile;
+import com.mm90849491.sleepguard.R;
+import com.mm90849491.sleepguard.Objects.Record;
+import com.mm90849491.sleepguard.Objects.Setting;
 
 import java.io.File;
 import java.io.FilenameFilter;

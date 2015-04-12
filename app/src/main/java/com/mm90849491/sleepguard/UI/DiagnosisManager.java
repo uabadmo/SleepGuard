@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,19 +6,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import com.mm90849491.sleepguard.R;
+import com.mm90849491.sleepguard.Objects.Schedule;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
 
 public class DiagnosisManager extends ActionBarActivity {

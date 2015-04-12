@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.Objects;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  *    Used for password protection.
  *  @version 1.1.0
  *  @author M.Meng
- *  @see com.mm90849491.sleepguard.Person
+ *  @see Person
  */
 final public class Client extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ final public class Client extends Person implements Serializable {
      *  @return :boolean true if has a password,
      *                    false if no password.
      */
-    protected boolean isAnonymous() {
+    public boolean isAnonymous() {
         return this._anonymous;
     }
 
@@ -63,7 +63,7 @@ final public class Client extends Person implements Serializable {
      *  @param _password String leading and trailing space will be cutoff.
      *                      Case-sensitive
      */
-    protected void password(String _password) {
+    public void password(String _password) {
         if( _password == null || _password.trim().length() == 0 ) {
             this.anonymous(HAS_NOT_PASSWORD);
         } else {
@@ -78,19 +78,19 @@ final public class Client extends Person implements Serializable {
      *    Only set _anonymous to DEF_ANONYMOUS value.
      *    _password will not be initialised
      */
-    protected Client() {
+    public Client() {
         this.anonymous( Client.DEF_ANONYMOUS );
     }
     /* ---------------- end of constructors ---------------- */
 
-    /* ------------- begin of protected methods ------------ */
+    /* ------------- begin of public methods ------------ */
     /**
      *  Verify given password.
      *  @param _password String leading and trailing space will be cutoff.
      *                      Case-sensitive
      *  @return boolean true if given string matches password or password is not set.
      */
-    protected boolean validate(String _password) {
+    public boolean validate(String _password) {
         return ( this.isAnonymous() == Client.HAS_NOT_PASSWORD ) ||
                 ( this.password().equals( _password.trim() ) );
     }
@@ -102,5 +102,5 @@ final public class Client extends Person implements Serializable {
                 .append("MM")
                 .toString();
     }
-    /* -------------- end of protected methods ------------- */
+    /* -------------- end of public methods ------------- */
 }

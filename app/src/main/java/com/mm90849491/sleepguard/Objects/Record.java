@@ -1,4 +1,4 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.Objects;
 
 import java.io.File;
 import android.media.AudioRecord;
@@ -8,13 +8,12 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import android.os.Environment;
-import android.util.Log;
 
 /** Record class.
  *      Stores the information about the recorded file
  *  @version 0.4.0
  *  @author M.Harrison
- *  @see com.mm90849491.sleepguard.Record
+ *  @see Record
  */
 
 public class Record {

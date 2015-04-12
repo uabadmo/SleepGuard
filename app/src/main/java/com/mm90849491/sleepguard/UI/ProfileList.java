@@ -1,6 +1,5 @@
-package com.mm90849491.sleepguard;
+package com.mm90849491.sleepguard.UI;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,7 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.mm90849491.sleepguard.Objects.Profile;
+import com.mm90849491.sleepguard.R;
 
 import java.util.ArrayList;
 
