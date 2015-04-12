@@ -10,9 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -105,16 +107,21 @@ public class Scheduler extends Activity {
         this.sourceAdapter = new SchedulerAdapter(this, "Audio File Path" , this.sourceItems, icons2);
         this.sourceGroup.setAdapter(this.sourceAdapter);
         this.sourceGroup.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Context ctx = parent.getContext();
+                TextView me = (TextView) v.findViewById(R.id.txtItem0);
                 switch (childPosition) {
                     case 0:
-                        Intent that = new Intent(getApplicationContext(), AndroidExplorer.class );
-                        that.putExtra(AndroidExplorer.CWD, ((TextView) v.findViewById(R.id.txtItem0)).getText().toString());
+                        Intent that = new Intent(ctx, AndroidExplorer.class );
+                        that.putExtra(AndroidExplorer.CWD, me.getText().toString());
                         startActivityForResult(that, PICK_CONTACT_REQUEST);
                         return true;
                     case 1:
-
+                        MDialog mm = new MDialog(ctx, me.getText().toString(), me);
+                        mm.getInput();
                         return true;
                     default:
                 }
@@ -162,19 +169,13 @@ public class Scheduler extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_scheduler, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

@@ -370,12 +370,12 @@ public class Schedule implements Serializable {
         String[] ids = TimeZone.getAvailableIDs(timeZone * DECI_S2H);
         SimpleTimeZone pdt = new SimpleTimeZone(timeZone * DECI_S2H, ids[0]);
         GregorianCalendar time = new GregorianCalendar(pdt);
-        time.set(Integer.valueOf(that.substring(11, 14)),
-                Integer.valueOf(that.substring(16, 17)) - 1,
-                Integer.valueOf(that.substring(19, 20)),
-                Integer.valueOf(that.substring(22, 23)),
-                Integer.valueOf(that.substring(25, 26)),
-                Integer.valueOf(that.substring(28, 29)));
+        time.set(Integer.valueOf(that.substring(11, 15)),
+                Integer.valueOf(that.substring(16, 18)) - 1,
+                Integer.valueOf(that.substring(19, 21)),
+                Integer.valueOf(that.substring(22, 24)),
+                Integer.valueOf(that.substring(25, 27)),
+                Integer.valueOf(that.substring(28, 30)));
         time.set(Calendar.MILLISECOND, Integer.valueOf(that.substring(31)));
         //01234 %02d 7 %02d 10 %04d 15 %02d 18 %02d 21 %02d 24 %02d 27 %02d 30 %03d;
         return time;
@@ -383,7 +383,7 @@ public class Schedule implements Serializable {
 
 
     protected static int getTimeZone(String that) {
-        int timeZone = Integer.valueOf(that.substring(5,6)) * 100 + Integer.valueOf(that.substring(8,9));
+        int timeZone = Integer.valueOf(that.substring(5,7)) * 100 + Integer.valueOf(that.substring(8,10));
         if(that.charAt(4) == '-') timeZone = -timeZone;
         return timeZone;
     }

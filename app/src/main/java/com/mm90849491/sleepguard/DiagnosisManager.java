@@ -120,31 +120,7 @@ public class DiagnosisManager extends ActionBarActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         setTitle(this.displayName);
-
-        /*
-        ImageButton btnNewProfile = (ImageButton)findViewById(R.id.btnNewProfile);
-        btnNewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "New Profile", Toast.LENGTH_SHORT).show();
-                Intent that = new Intent(getApplicationContext(), EditProfile.class);
-                startActivity( that );
-            }
-        });
-
-        ImageButton btnManual = (ImageButton)findViewById(R.id.btnManual);
-        btnManual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Manual", Toast.LENGTH_SHORT).show();
-                Intent that = new Intent(getApplicationContext(), HelpDesk.class );
-                startActivity( that );
-            }
-        });
-        */
-
     }
 
     @Override
@@ -157,7 +133,6 @@ public class DiagnosisManager extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_diagnosis_manager, menu);
         return true;
     }
