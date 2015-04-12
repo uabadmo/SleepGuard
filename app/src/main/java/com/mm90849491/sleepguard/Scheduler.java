@@ -44,6 +44,12 @@ public class Scheduler extends Activity {
     ExpandableListView sourceGroup;
     List<String> sourceItems;
 
+    SchedulerAdapter scheduleAdapter;
+    ExpandableListView scheduleGroup;
+    List<String> scheduleItems;
+
+    MDialog mm;
+
     public void onClickCancel(View v) {
         v.setBackgroundColor(getResources().getColor(R.color.primaryLight));
         super.onBackPressed();
@@ -66,11 +72,11 @@ public class Scheduler extends Activity {
 
     private void prepareListData() {
         this.statuesItems = new ArrayList<String>();
-        this.statuesItems.add(STATES[0]);
+        this.statuesItems.add(STATES[4]);
         this.statuesItems.add("Generate Result");
         this.statuesItems.add("Read Result");
 
-        int[] icons = {0, 2, 3};
+        int[] icons = {0, 3, 2};
         this.statuesAdapter = new SchedulerAdapter(this, getResources().getString(R.string.text_diagnosis_status) , this.statuesItems, icons);
         this.statuesGroup.setAdapter(this.statuesAdapter);
         this.statuesGroup.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -82,7 +88,7 @@ public class Scheduler extends Activity {
                         return true;
                     case 2:
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(parent.getContext());
-                        dlgAlert.setMessage("You are dead.");
+                        dlgAlert.setMessage("No sleep apnoea detected.");
                         dlgAlert.setTitle("Diagnosis Result");
                         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -120,7 +126,51 @@ public class Scheduler extends Activity {
                         startActivityForResult(that, PICK_CONTACT_REQUEST);
                         return true;
                     case 1:
-                        MDialog mm = new MDialog(ctx, me.getText().toString(), me);
+                        mm = new MDialog(ctx, me.getText().toString(), me, "File Name");
+                        mm.getInput();
+                        return true;
+                    default:
+                }
+                return true;
+            }
+        });
+
+
+        this.scheduleItems = new ArrayList<String>();
+        this.scheduleItems.add("Record Now");
+        this.scheduleItems.add("Starting Time");
+        this.scheduleItems.add("2015-05-05 12:21");
+        this.scheduleItems.add("Duration HH:MM");
+        this.scheduleItems.add("12:21");
+        this.scheduleItems.add("Ending Time");
+        this.scheduleItems.add("2015-05-05 12:22");
+
+        int[] icons3 = {6, 0, 5, 0, 5, 0, 5};
+        this.scheduleAdapter = new SchedulerAdapter(this, "Audio File Path" , this.scheduleItems, icons3);
+        this.scheduleGroup.setAdapter(this.scheduleAdapter);
+        this.scheduleGroup.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Context ctx = parent.getContext();
+                TextView me = (TextView) v.findViewById(R.id.txtItem0);
+                switch (childPosition) {
+                    case 0:
+                        Intent that = new Intent(ctx, AndroidExplorer.class );
+                        that.putExtra(AndroidExplorer.CWD, me.getText().toString());
+                        startActivityForResult(that, PICK_CONTACT_REQUEST);
+                        return true;
+                    case 2:
+                        mm = new MDialog(ctx, me.getText().toString(), me, "Starting Time");
+                        mm.getInput();
+                        return true;
+                    case 4:
+                        mm = new MDialog(ctx, me.getText().toString(), me, "Duration HH:MM");
+                        mm.getInput();
+                        return true;
+                    case 6:
+                        mm = new MDialog(ctx, me.getText().toString(), me, "Ending Time");
                         mm.getInput();
                         return true;
                     default:
@@ -147,6 +197,7 @@ public class Scheduler extends Activity {
 
         this.statuesGroup = (ExpandableListView) findViewById(R.id.elvStatus);
         this.sourceGroup = (ExpandableListView) findViewById(R.id.elvSource);
+        this.scheduleGroup = (ExpandableListView) findViewById(R.id.elvSchedule);
         this.prepareListData();
     }
 
@@ -166,6 +217,10 @@ public class Scheduler extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

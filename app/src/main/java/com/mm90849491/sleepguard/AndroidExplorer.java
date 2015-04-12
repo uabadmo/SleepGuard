@@ -81,10 +81,10 @@ public class AndroidExplorer extends ListActivity {
                     item.add(file.getName() + "/");
                 }
             } else {
-                //if(file.getName().toLowerCase().endsWith(".wav")) {
+                if(file.getName().toLowerCase().endsWith(".wav")) {
                     path.add(file.getPath());
                     item.add(file.getName());
-                //}
+                }
             }
         }
 

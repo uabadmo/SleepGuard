@@ -20,7 +20,10 @@ public class SchedulerAdapter extends BaseExpandableListAdapter {
                                                 android.R.drawable.ic_menu_edit,
             android.R.drawable.ic_menu_view,
             android.R.drawable.ic_menu_compass,
-            android.R.drawable.ic_menu_search
+            android.R.drawable.ic_menu_search,
+            android.R.drawable.ic_menu_my_calendar,
+            android.R.drawable.ic_btn_speak_now
+
     };
     private Context ctx;
     private String expandHeader;
