@@ -1,6 +1,12 @@
 package com.mm90849491.sleepguard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,56 +24,103 @@ import java.util.List;
 
 public class Scheduler extends Activity {
     public final static String NEW_SCHEDULE = "com.mm90849491.sleepguard.EDIT_SCHEDULE";
+    public final static String[] STATES = {
+            "Waiting for Configuration",
+            "Audio File Not Found",
+            "Bad Recording",
+            "Ready to Generate Result",
+            "Result Available",
+            "Successfully Finished" };
     private Schedule newSchedule;
     private String fileName;
 
-    SchedulerAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    SchedulerAdapter statuesAdapter;
+    ExpandableListView statuesGroup;
+    List<String> statuesItems;
+
+    SchedulerAdapter sourceAdapter;
+    ExpandableListView sourceGroup;
+    List<String> sourceItems;
 
     public void onClickCancel(View v) {
         v.setBackgroundColor(getResources().getColor(R.color.primaryLight));
         super.onBackPressed();
     }
 
+    static final int PICK_CONTACT_REQUEST = 1;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_CONTACT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String filePath = data.getStringExtra(AndroidExplorer.FILE_PATH);
+                int end = filePath.lastIndexOf(File.separator);
+                this.sourceAdapter.setText(0, filePath.substring(0, end + 1) );
+                if(end < filePath.length()) {
+                    this.sourceAdapter.setText(1, filePath.substring(end + 1));
+                }
+            }
+        }
+    }
+
     private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        this.statuesItems = new ArrayList<String>();
+        this.statuesItems.add(STATES[0]);
+        this.statuesItems.add("Generate Result");
+        this.statuesItems.add("Read Result");
 
-        // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
+        int[] icons = {0, 2, 3};
+        this.statuesAdapter = new SchedulerAdapter(this, getResources().getString(R.string.text_diagnosis_status) , this.statuesItems, icons);
+        this.statuesGroup.setAdapter(this.statuesAdapter);
+        this.statuesGroup.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                switch (childPosition) {
+                    case 1:
 
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
+                        return true;
+                    case 2:
+                        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(parent.getContext());
+                        dlgAlert.setMessage("You are dead.");
+                        dlgAlert.setTitle("Diagnosis Result");
+                        dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        dlgAlert.setCancelable(false);
+                        dlgAlert.create().show();
+                        return true;
+                    default:
+                }
+                return true;
+            }
+        });
+        this.statuesGroup.expandGroup(0);
 
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
 
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
+        this.sourceItems = new ArrayList<String>();
+        this.sourceItems.add("/");
+        this.sourceItems.add("");
 
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
+        int[] icons2 = {4, 1};
+        this.sourceAdapter = new SchedulerAdapter(this, "Audio File Path" , this.sourceItems, icons2);
+        this.sourceGroup.setAdapter(this.sourceAdapter);
+        this.sourceGroup.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                switch (childPosition) {
+                    case 0:
+                        Intent that = new Intent(getApplicationContext(), AndroidExplorer.class );
+                        that.putExtra(AndroidExplorer.CWD, ((TextView) v.findViewById(R.id.txtItem0)).getText().toString());
+                        startActivityForResult(that, PICK_CONTACT_REQUEST);
+                        return true;
+                    case 1:
+
+                        return true;
+                    default:
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -84,13 +138,9 @@ public class Scheduler extends Activity {
             this.fileName = (String) savedInstanceState.getSerializable(NEW_SCHEDULE);
         }
 
-        this.expListView = (ExpandableListView) findViewById(R.id.elvStatus);
+        this.statuesGroup = (ExpandableListView) findViewById(R.id.elvStatus);
+        this.sourceGroup = (ExpandableListView) findViewById(R.id.elvSource);
         this.prepareListData();
-
-        this.listAdapter = new SchedulerAdapter(this, this.listDataHeader, this.listDataChild);
-
-        // setting list adapter
-        this.expListView.setAdapter(this.listAdapter);
     }
 
     @Override

@@ -17,6 +17,7 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
     <string name="button_close">Close</string>
+    <string name="button_select">Select This Folder</string>
 
     <string name="text_first_name">First name</string>
     <string name="text_last_name">Last name</string>
@@ -27,18 +28,13 @@
     <string name="text_phone_extension">Phone Extension</string>
     <string name="text_scheduling_date">Create Date</string>
     <string name="text_dummy">John Smith</string>
+    <string name="text_header">Header</string>
+    <string name="text_item">Item</string>
+    <string name="text_button">Edit</string>
 
 
     <string name="text_diagnosis_status">Diagnosis Status</string>
 
     <string name="hello_world">Hello newbie!</string>
-
-    <string-array name="diagnosis_states">
-        <item>Waiting for Configuration</item>
-        <item>Audio File Not Found</item>
-        <item>Bad Recording</item>
-        <item>Ready to Generate Result</item>
-        <item>Result Available</item>
-        <item>Successfully Finished</item>
-    </string-array>
+    <string name="text_empty">No Data</string>
 </resources>

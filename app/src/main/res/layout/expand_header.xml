@@ -4,14 +4,16 @@
     android:layout_height="wrap_content"
     android:paddingTop="1dp"
     android:paddingBottom="1dp"
-    android:background="#ffff6f36">
+    android:background="@color/shadow">
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:layout_height="@dimen/abc_text_size_display_2_material"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="@string/text_header"
         android:id="@+id/txtHeader"
         android:gravity="center"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:textColor="@color/bright_foreground_inverse_material_light" />
 </LinearLayout>

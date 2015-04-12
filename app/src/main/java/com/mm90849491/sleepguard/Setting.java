@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
- * Created by Kenelf on 2015/04/07.
+ * Created by M.Meng on 2015/04/07.
  */
 public class Setting {
     static private final String SAVEDATA = "sg_setting.ini";

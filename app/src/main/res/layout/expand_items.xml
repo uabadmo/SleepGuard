@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="@dimen/abc_text_size_display_4_material"
-    android:background="@color/app_background">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/abc_text_size_display_1_material"
+    android:background="@color/shadow"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:descendantFocusability="blocksDescendants" >
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Large Text"
+        android:layout_height="fill_parent"
+        android:text="@string/text_item"
         android:id="@+id/txtItem0"
         android:gravity="center|left"
-        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:textSize="@dimen/abc_text_size_large_material"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:background="#ffff6f36" />
-</LinearLayout>
+        android:background="@color/app_background" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/btnItem0"
+        android:src="@android:drawable/ic_menu_report_image"
+        android:layout_gravity="right"
+        android:tint="@color/primary"
+        android:contentDescription="@string/text_button"
+        android:background="@color/listBackground"
+        android:layout_margin="2dp" />
+</FrameLayout>

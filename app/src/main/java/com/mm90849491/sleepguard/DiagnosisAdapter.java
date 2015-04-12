@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Kenelf on 2015/04/09.
+ * Created by M.Meng on 2015/04/09.
  */
 public class DiagnosisAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<Schedule> schedules;

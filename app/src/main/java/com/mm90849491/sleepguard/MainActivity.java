@@ -31,23 +31,6 @@ public class MainActivity extends ActionBarActivity {
 
     private AndroidExplorer fileSelector;
 
-    static final int PICK_CONTACT_REQUEST = 1;
-    public void selectFile(View dummy) {
-        Intent that = new Intent(getApplicationContext(), AndroidExplorer.class );
-        startActivityForResult(that, PICK_CONTACT_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_CONTACT_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                String filePath = data.getStringExtra(AndroidExplorer.FILE_PATH);
-                TextView txtView = (TextView)findViewById(R.id.textView);
-                txtView.setText(filePath);
-            }
-        }
-    }
-
     private void clearProfile() {
         File[] trash = (this.ctx.getFilesDir()).listFiles(new FilenameFilter() {
 

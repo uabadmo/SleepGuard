@@ -41,20 +41,5 @@
         android:contentDescription="@string/title_activity_edit_profile"
         android:layout_margin="@dimen/add_button_margin" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_gravity="right|center_vertical"
-        android:onClick="selectFile" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView"
-        android:layout_gravity="center" />
-
 
 </FrameLayout>

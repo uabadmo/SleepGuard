@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 public class AndroidExplorer extends ListActivity {
     public final static String FILE_PATH = "com.mm90849491.sleepguard.FILE_PATH";
+    public final static String CWD = "com.mm90849491.sleepguard.CWD";
     private static final String root = "/";
-    private List<String> item;
     private List<String> path;
     private TextView myPath;
 
@@ -36,11 +36,24 @@ public class AndroidExplorer extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_file);
         this.myPath = (TextView) findViewById(R.id.path);
-        if(Environment.getExternalStorageState () == Environment.MEDIA_MOUNTED) {
-            this.getDir( Environment.getExternalStorageDirectory() );
+        File nextPath = null;
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                if(Environment.getExternalStorageState () == Environment.MEDIA_MOUNTED) {
+                    nextPath = Environment.getExternalStorageDirectory();
+                } else {
+                    nextPath = new File(root);
+                }
+            } else {
+                nextPath = new File( extras.getString(CWD) );
+            }
         } else {
-            this.getDir( new File(root) );
+            nextPath = new File( (String) savedInstanceState.getSerializable(CWD) );
         }
+
+        this.getDir( nextPath );
     }
 
     /**
@@ -49,14 +62,16 @@ public class AndroidExplorer extends ListActivity {
      * @param dirPath
      */
     private void getDir(File dirPath) {
-        this.myPath.setText("Location: " + dirPath.getAbsolutePath() );
-        this.item = new ArrayList<String>();
+        List<String> item = new ArrayList<String>();
         this.path = new ArrayList<String>();
         File[] files = dirPath.listFiles();
 
         if (!dirPath.getAbsolutePath().equals(root)) {
             item.add("../");
             path.add(dirPath.getParent());
+            this.myPath.setText("Location: " + dirPath.getAbsolutePath() + "/" );
+        } else {
+            this.myPath.setText("Location: " + dirPath.getAbsolutePath() );
         }
 
         for(File file: files) {
@@ -96,5 +111,18 @@ public class AndroidExplorer extends ListActivity {
             setResult(Activity.RESULT_OK, resultData);
             finish();
         }
+    }
+
+    public void cwd(View v) {
+        v.setBackgroundColor(getResources().getColor(R.color.primaryLight));
+        Intent resultData = new Intent();
+        resultData.putExtra( FILE_PATH, this.myPath.getText().toString().substring(10) );
+        setResult(Activity.RESULT_OK, resultData);
+        finish();
+    }
+
+    public void onClickCancel(View v) {
+        v.setBackgroundColor(getResources().getColor(R.color.primaryLight));
+        super.onBackPressed();
     }
 }
