@@ -4,24 +4,77 @@
 
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent">    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/activity_horizontal_margin_large"
+        android:text="@string/button_cancel"
+        android:id="@+id/btnCancel"
+        android:background="@color/primary"
+        android:textColor="@color/bright_foreground_inverse_material_light"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:clickable="true"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:onClick="onClickCancel"
+        android:layout_weight="1"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:gravity="center"
+        android:layout_margin="1dp" />
 
-        <RadioButton
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/activity_horizontal_margin_large"
+            android:text="@string/button_save"
+            android:id="@+id/btnSave"
+            android:background="@color/primary"
+            android:textColor="@color/bright_foreground_inverse_material_light"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:clickable="true"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:onClick="onClickSave"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:minHeight="@dimen/abc_text_size_large_material" /></TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="fill_horizontal">
+
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New RadioButton"
-            android:id="@+id/radioButton"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:text="Show First Name"
+            android:id="@+id/rbtnFirstName"
+            android:layout_span="2"
+            android:layout_column="0" />
+    </TableRow>
 
-        <RadioButton
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="fill_horizontal">
+
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New RadioButton"
-            android:id="@+id/radioButton2"
-            android:layout_below="@+id/radioButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:text="Show Last Name"
+            android:id="@+id/rbtnLastName"
+            android:singleLine="false"
+            android:layout_column="0"
+            android:layout_span="2" />
     </TableRow>
 </TableLayout>

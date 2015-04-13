@@ -14,7 +14,7 @@ public class Analyser {
     /* error = DOWN_SAMPLE_SCALE / SAMPLE_FREQUENCY second */
     public static final int DEF_DOWN_SAMPLE_SCALE = 100;
     public static final int DEF_DURATION = 3600;
-    public static final int DEF_START = 600;
+    public static final int DEF_START = 300;
     public static final boolean LENGTH_CHECK = false;
 
     public static final String[] HAZARD_CLASS = {"File cannot be Open",
@@ -117,10 +117,10 @@ public class Analyser {
         int threshold2 = peak/20;
         int threshold3 = peak/4;
 
-        if(threshold3 - threshold2 < 20 && duration < DEF_START) {
+        if(threshold3 - threshold2 < 100) {
             return 3;
         }
-        if(threshold3 - threshold1 < 100) {
+        if(threshold3 - threshold1 < 1000 && duration < DEF_START) {
             return 2;
         }
 
@@ -152,6 +152,7 @@ public class Analyser {
 
         int hc = 0;
         int record = 0;
+        int sum = 0;
 
         for(sec = 0; sec < duration; sec++) {
             pause = 0;
@@ -162,6 +163,7 @@ public class Analyser {
                 for (cha = 0; cha < cluster; cha++) {
                     trueValue += MISC.readWord(buf) / cluster;
                 }
+                sum += trueValue;
                 trueValue = Math.abs(trueValue);
                 if(trueValue < threshold1) {
                     pause++;
@@ -193,8 +195,10 @@ public class Analyser {
             }
         }
 
-        if(pauseCount >= 20 || record >= 10) {
-            return 4;
+        if(Math.abs(sum)/2 > threshold2) {
+            if(pauseCount >= 20 || record >= 10) {
+                return 4;
+            }
         }
         return 3;
     }

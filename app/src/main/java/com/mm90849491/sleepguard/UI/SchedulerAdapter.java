@@ -48,6 +48,10 @@ public class SchedulerAdapter extends BaseExpandableListAdapter {
         this.txtChildren[childPosition].setText(text);
     }
 
+    public TextView getLabel(int childPosition) {
+        return this.txtChildren[childPosition];
+    }
+
     public String getText(int childPosition) {
         return this.expandItems.get(childPosition);
     }

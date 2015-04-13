@@ -33,12 +33,13 @@ public class Scheduler extends Activity {
             "Successfully Finished" };
     private Schedule newSchedule;
     private String fileName;
-    private int diagResult;
+    private Integer diagResult;
     private String audioPath;
 
     SchedulerAdapter statuesAdapter;
     ExpandableListView statuesGroup;
     List<String> statuesItems;
+    TextView statuesLabel;
 
     SchedulerAdapter sourceAdapter;
     ExpandableListView sourceGroup;
@@ -77,6 +78,8 @@ public class Scheduler extends Activity {
         this.statuesItems.add("Generate Result");
         this.statuesItems.add("Read Result");
 
+        this.diagResult = 0;
+
         int[] icons = {0, 3, 2};
         this.statuesAdapter = new SchedulerAdapter(this, getResources().getString(R.string.text_diagnosis_status) , this.statuesItems, icons);
         this.statuesGroup.setAdapter(this.statuesAdapter);
@@ -85,8 +88,8 @@ public class Scheduler extends Activity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (childPosition) {
                     case 1:
-                        diagResult = Analyser.generate(new File(audioPath));
-                        statuesAdapter.setText(0, STATES[4]);
+                        WaitingDialog dog = new WaitingDialog(parent.getContext(), new File(audioPath), 0, statuesAdapter , "Analysing......");
+                        diagResult = dog.go();
                         return true;
                     case 2:
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(parent.getContext());
@@ -98,6 +101,7 @@ public class Scheduler extends Activity {
                         });
                         dlgAlert.setCancelable(false);
                         dlgAlert.create().show();
+                        statuesAdapter.setText(0, STATES[5]);
                         return true;
                     default:
                 }
@@ -126,11 +130,13 @@ public class Scheduler extends Activity {
                         Intent that = new Intent(ctx, AndroidExplorer.class );
                         that.putExtra(AndroidExplorer.CWD, me.getText().toString());
                         startActivityForResult(that, PICK_CONTACT_REQUEST);
+                        statuesAdapter.setText(0, STATES[3]);
                         return true;
                     case 1:
                         audioPath = me.getText().toString();
                         mm = new MDialog(ctx, audioPath, me, "File Name");
                         mm.getInput();
+                        statuesAdapter.setText(0, STATES[3]);
                         return true;
                     default:
                 }
@@ -149,7 +155,7 @@ public class Scheduler extends Activity {
         this.scheduleItems.add("2015-05-05 12:22");
 
         int[] icons3 = {6, 0, 5, 0, 5, 0, 5};
-        this.scheduleAdapter = new SchedulerAdapter(this, "Audio File Path" , this.scheduleItems, icons3);
+        this.scheduleAdapter = new SchedulerAdapter(this, "Schedule" , this.scheduleItems, icons3);
         this.scheduleGroup.setAdapter(this.scheduleAdapter);
         this.scheduleGroup.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
