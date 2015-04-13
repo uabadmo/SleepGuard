@@ -60,96 +60,18 @@ public class Schedule implements Serializable {
     private TimerTask timerTask = null;
     private Record recorder = null;
     private boolean isRecording;
-    private int _hour;
-    private int _minute;
-    private int _currentHour;
-    private int _currentMinute;
-    private int _durationHours;
-    private int _durationMinutes;
-    private int _timeUntilStart;
-    private int _recordingDuration;
+    /* UTC: [-1200: 30: +1400] */
+    private int timeZone = -800;
+    private Date upTime;
+    private Date startTime;
+    private Date endTime;
+    private boolean dayLightSaving = true;
+    private boolean active = true;
+    private final Context _CTX;
+    private String filepath;
     /* ------------------ end of instance variables ------------ */
 
     /* ------------ beginning of getter/setter methods --------- */
-    /** Gets hour to start recording in 24-hour-clock: _hour.
-     * @return int
-     */
-    public int hour() { return _hour; }
-
-    /** Sets hour to start recording in 24-hour-clock: _hour.
-     * @param input int
-     */
-    public void hour(int input) { this._hour = input; }
-
-    /** Gets minute to start recording: _minute.
-     * @return int
-     */
-    public int minute() { return _minute; }
-
-    /** Sets minute to start recording: _minute.
-     * @param input int
-     */
-    public void minute(int input) { this._minute = input; }
-
-    /** Gets current time's hour: _currentHour.
-     * @return int
-     */
-    public int currentHour() { return _currentHour; }
-
-    /** Sets current time's hour: _currentHour.
-     * @param input int
-     */
-    public void currentHour(int input) { this._currentHour = input; }
-
-    /** Gets current time's minute: _currentMinute.
-     * @return int
-     */
-    public int currentMinute() { return _currentMinute; }
-
-    /** Sets current time's minute: _currentMinute.
-     * @param input int
-     */
-    public void currentMinute(int input) { this._currentMinute = input; }
-
-    /** Gets amount of hours of the recording: _durationHours.
-     * @return int
-     */
-    public int durationHours() { return _durationHours; }
-
-    /** Sets amount of hours of the recording: _durationHours.
-     * @param input int
-     */
-    public void durationHours(int input) { this._durationHours = input; }
-
-    /** Gets remainder of minutes of the recording: _durationMinutes.
-     * @return int
-     */
-    public int durationMinutes() { return _durationMinutes; }
-
-    /** Sets remainder of minutes of the recording: _durationMinutes.
-     * @param input int
-     */
-    public void durationMinutes(int input) { this._durationMinutes = input; }
-
-    /** Gets time until the recording starts in milliseconds: _timeUntilStart.
-     * @return int
-     */
-    public int timeUntilStart() { return _timeUntilStart; }
-
-    /** Sets time until the recording starts in milliseconds: _timeUntilStart.
-     * @param input int
-     */
-    public void timeUntilStart(int input) { this._timeUntilStart = input; }
-
-    /** Gets the duration of the recording in milliseconds: _recordingDuration.
-     * @return int
-     */
-    public int recordingDuration() { return _recordingDuration; }
-
-    /** Sets the duration of the recording in milliseconds: _recordingDuration.
-     * @param input int
-     */
-    public void recordingDuration(int input) { this._recordingDuration = input; }
     /* -------------------end of getter/setter methods --------- */
 
     /* ------------ beginning of public methods ---------------- */
@@ -164,14 +86,14 @@ public class Schedule implements Serializable {
     /** The main public method that starts the schedule (and by extension the recording).
      */
     public void startTi() {
-        Log.e("tagtag", "2");
-        timer = new Timer();
-
-        if (!isRecording) {
-            initializeTimerTaskStart();
-
-            timer.schedule(timerTask, timeUntilStart(), recordingDuration());
-        }
+//        Log.e("tagtag", "2");
+//        timer = new Timer();
+//
+//        if (!isRecording) {
+//            initializeTimerTaskStart();
+//
+//            timer.schedule(timerTask, timeUntilStart(), recordingDuration());
+//        }
     }
 
     /** The main public method that stops the scheduled task and performs requisite resets.
@@ -209,42 +131,6 @@ public class Schedule implements Serializable {
             }
         };
     }
-    /** Given the integer inputs, calculates in milliseconds the amount of time before the
-     * recording should start and in milliseconds the intended duration fo the recording.
-     */
-    private void calculateTimes() {
-        int addMillisForDuration = 0, addMillisForStart = 0;
-
-        if (currentHour() <= hour()) {
-            addMillisForStart += (hour() - currentHour()) * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLIS_PER_SECOND;
-        } else {
-            addMillisForStart += (HOURS_PER_DAY - currentHour() + hour()) * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLIS_PER_SECOND;
-        }
-
-        if (currentMinute() <= minute()) {
-            addMillisForStart += (minute() - currentMinute()) * SECONDS_PER_MINUTE * MILLIS_PER_SECOND;
-        } else {
-            addMillisForStart += (MINUTES_PER_HOUR - currentMinute() + minute()) * SECONDS_PER_MINUTE * MILLIS_PER_SECOND;
-        }
-        timeUntilStart(addMillisForStart);
-
-        addMillisForDuration += durationHours() * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLIS_PER_SECOND;
-        addMillisForDuration += durationMinutes() * SECONDS_PER_MINUTE * MILLIS_PER_SECOND;
-        recordingDuration(addMillisForDuration);
-    }
-
-
-    /*
-    * Like in Record - I'll leave these available in case they're needed.
-     */
-    /* UTC: [-1200: 30: +1400] */
-    private int timeZone = -800;
-    private Date upTime;
-    private Date startTime;
-    private Date endTime;
-    private boolean dayLightSaving = true;
-    private boolean active = true;
-    private final Context _CTX;
 
 
     /* ------------ beginning of constructors ------------------ */
@@ -384,6 +270,14 @@ public class Schedule implements Serializable {
         int timeZone = Integer.valueOf(that.substring(5,7)) * 100 + Integer.valueOf(that.substring(8,10));
         if(that.charAt(4) == '-') timeZone = -timeZone;
         return timeZone;
+    }
+
+    public void setPath(String that) {
+        this.filepath = that;
+    }
+
+    public String getPath() {
+        return this.filepath;
     }
 
 }

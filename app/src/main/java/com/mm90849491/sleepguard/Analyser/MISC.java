@@ -54,7 +54,7 @@ final public class MISC {
             c = in.read();
             sum ^= (byte)c << 24;
         } catch(IOException e) {
-            sum = -1;
+            sum = 0;
         }
         return sum;
     }
@@ -74,7 +74,7 @@ final public class MISC {
             c = in.read();
             sum ^= ((byte)c) << 8;
         } catch(IOException e) {
-            sum = -1;
+            sum = 0;
         }
         return sum;
     }

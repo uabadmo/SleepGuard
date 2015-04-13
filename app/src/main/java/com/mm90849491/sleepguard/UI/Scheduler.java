@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.mm90849491.sleepguard.Analyser.Analyser;
 import com.mm90849491.sleepguard.Objects.Profile;
 import com.mm90849491.sleepguard.R;
 import com.mm90849491.sleepguard.Objects.Schedule;
@@ -32,6 +33,8 @@ public class Scheduler extends Activity {
             "Successfully Finished" };
     private Schedule newSchedule;
     private String fileName;
+    private int diagResult;
+    private String audioPath;
 
     SchedulerAdapter statuesAdapter;
     ExpandableListView statuesGroup;
@@ -58,6 +61,7 @@ public class Scheduler extends Activity {
         if (requestCode == PICK_CONTACT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 String filePath = data.getStringExtra(AndroidExplorer.FILE_PATH);
+                this.audioPath = filePath;
                 int end = filePath.lastIndexOf(File.separator);
                 this.sourceAdapter.setText(0, filePath.substring(0, end + 1) );
                 if(end < filePath.length()) {
@@ -69,7 +73,7 @@ public class Scheduler extends Activity {
 
     private void prepareListData() {
         this.statuesItems = new ArrayList<String>();
-        this.statuesItems.add(STATES[4]);
+        this.statuesItems.add(STATES[0]);
         this.statuesItems.add("Generate Result");
         this.statuesItems.add("Read Result");
 
@@ -81,11 +85,12 @@ public class Scheduler extends Activity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (childPosition) {
                     case 1:
-
+                        diagResult = Analyser.generate(new File(audioPath));
+                        statuesAdapter.setText(0, STATES[4]);
                         return true;
                     case 2:
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(parent.getContext());
-                        dlgAlert.setMessage("No sleep apnoea detected.");
+                        dlgAlert.setMessage(Analyser.HAZARD_CLASS[diagResult]);
                         dlgAlert.setTitle("Diagnosis Result");
                         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -123,7 +128,8 @@ public class Scheduler extends Activity {
                         startActivityForResult(that, PICK_CONTACT_REQUEST);
                         return true;
                     case 1:
-                        mm = new MDialog(ctx, me.getText().toString(), me, "File Name");
+                        audioPath = me.getText().toString();
+                        mm = new MDialog(ctx, audioPath, me, "File Name");
                         mm.getInput();
                         return true;
                     default:
@@ -192,6 +198,7 @@ public class Scheduler extends Activity {
             this.fileName = (String) savedInstanceState.getSerializable(NEW_SCHEDULE);
         }
 
+        this.audioPath = "";
         this.statuesGroup = (ExpandableListView) findViewById(R.id.elvStatus);
         this.sourceGroup = (ExpandableListView) findViewById(R.id.elvSource);
         this.scheduleGroup = (ExpandableListView) findViewById(R.id.elvSchedule);
