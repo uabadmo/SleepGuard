@@ -3,6 +3,7 @@
     package="com.mm90849491.sleepguard" >
 
     <uses-permission android:name="com.android.alarm.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
